@@ -1,0 +1,68 @@
+{
+    "html": {
+        "added": [
+            "front\/clients\/invoiceList"
+        ],
+        "edited": [
+            "front\/checkout\/shippingAddress",
+            "admin\/dashboard\/dashboard",
+            "admin\/products\/pricing",
+            "admin\/products\/product",
+            "admin\/products\/products",
+            "admin\/products\/productsList",
+            "front\/store\/cart",
+            "front\/store\/cartContents",
+            "front\/store\/cartReview",
+            "front\/store\/cartUserBar",
+            "front\/store\/menu",
+            "front\/store\/menuChildren",
+            "front\/store\/product",
+            "front\/store\/productPrice",
+            "front\/store\/store",
+            "front\/store\/storeContent",
+            "front\/checkout\/shippingAddress",
+            "admin\/dashboard\/dashboard",
+            "admin\/products\/pricing",
+            "admin\/products\/product",
+            "admin\/products\/products",
+            "admin\/products\/productsList",
+            "front\/store\/cart",
+            "front\/store\/cartContents",
+            "front\/store\/cartReview",
+            "front\/store\/cartUserBar",
+            "front\/store\/menu",
+            "front\/store\/menuChildren",
+            "front\/store\/product",
+            "front\/store\/productPrice",
+            "front\/store\/store",
+            "front\/store\/storeContent",
+            "front\/checkout\/shippingAddress",
+            "admin\/dashboard\/dashboard",
+            "admin\/products\/pricing",
+            "admin\/products\/product",
+            "admin\/products\/products",
+            "admin\/products\/productsList",
+            "front\/store\/cart",
+            "front\/store\/cartContents",
+            "front\/store\/cartReview",
+            "front\/store\/cartUserBar",
+            "front\/store\/menu",
+            "front\/store\/menuChildren",
+            "front\/store\/product",
+            "front\/store\/productPrice",
+            "front\/store\/store",
+            "front\/store\/storeContent"
+        ],
+        "removed": []
+    },
+    "css": {
+        "added": [],
+        "edited": [],
+        "removed": []
+    },
+    "resources": {
+        "added": [],
+        "edited": [],
+        "removed": []
+    }
+}

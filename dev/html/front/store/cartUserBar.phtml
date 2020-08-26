@@ -1,0 +1,85 @@
+<ips:template parameters="$sep = TRUE" />
+{{$currency = ( isset( \IPS\Request::i()->cookie['currency'] ) and \in_array( \IPS\Request::i()->cookie['currency'], \IPS\nexus\Money::currencies() ) ) ? \IPS\Request::i()->cookie['currency'] : \IPS\nexus\Customer::loggedIn()->defaultCurrency();}}
+{{if isset( $_SESSION['printful_cart'] ) and \count( $_SESSION['printful_cart'] )}}
+	{{$subtotal = new \IPS\Math\Number('0');}}
+    <li class="cUserNav_icon" id="printfulCart_container">
+        <a href="{url='app=printfulintegration&module=store&controller=cart' seoTemplate='merch_cart'}" id="printfulCart" data-ipsMenu data-ipsMenu-closeOnClick='false' data-ipsTooltip _title="{lang='printful_cart'}">
+            <i class="fa fa-shopping-bag" aria-hidden="true"></i> 
+            <span class='ipsNotificationCount'>{expression="\IPS\printfulintegration\Application::cartCount()"}</span>
+        </a>
+        <div id="printfulCart_menu" class="ipsMenu ipsMenu_wide ipsHide">
+            <div class="ipsMenu_headerBar">
+                <h4 class="ipsType_sectionHead">
+                    {lang='printful_cart'}
+                </h4>
+            </div>
+            <div class="ipsMenu_content ipsPad_half">
+                <ul id="printfulCartContent" class="ipsDataList" data-role="cartList">
+                    {{foreach $_SESSION['printful_cart'] as $id => $item}}
+                        <li class="ipsDataItem printfulCart_item">
+                            <div class="ipsDataItem_icon">
+                                <img src='{file="$item->extra['image']" extension="printfulintegration_ProductImage"}' alt="{$item->name}" class="ipsThumb ipsThumb_small">
+                            </div>
+                            <div class="ipsDataItem_main">
+                                <strong><a href="{$item->url}" class="ipsType_large ipsType_blendLinks">{$item->name}</a></strong>
+                                <div class="ipsType_medium ipsType_light">
+                                    {{if $item->extra['color']}}
+                                        <strong>
+                                            {lang="printful_item_color"}:
+                                        </strong>
+                                        {$item->extra['color']}
+                                        <br />
+                                    {{endif}}
+                                    {{if $item->extra['size']}}
+                                        <strong>
+                                            {lang="printful_item_size"}:
+                                        </strong>
+                                        {$item->extra['size']}
+                                    {{endif}}
+                                </div>
+                            </div>
+                            <div class="ipsDataItem_generic ipsDataItem_size1 ipsType_center">
+                                &times;{$item->quantity}
+                            </div>
+                            <div class="ipsDataItem_generic ipsDataItem_size3 ipsType_normal ipsType_right">
+                                <strong style="color: {theme='price'};">
+                                    {{$totalPrice=$item->linePrice();}}
+                                    {$totalPrice}
+                                    {{$subtotal = $subtotal->add($totalPrice->amount);}}
+                                </strong>
+								{{if $item->quantity > 1}}
+									<p class='ipsType_reset ipsType_small ipsType_light'>
+										{lang="each_short" sprintf="$item->price"}
+									</p>
+								{{endif}}
+                            </div>
+                        </li>
+                    {{endforeach}}
+                </ul>
+            </div>
+            <div class="ipsMenu_footerBar">
+                <div class="ipsColumns">
+                    <div class="ipsType_large ipsColumn ipsColumn_medium" style="vertical-align: middle;">
+                        <strong>
+                            {lang="subtotal"}:
+                            <span style="color: {theme='price'};">{money="$subtotal" currency="$currency"}</span>
+                        </strong>
+                    </div>
+                    <div class="ipsColumn ipsColumn_medium">
+                        <a href="{url='app=printfulintegration&module=store&controller=cart' seoTemplate='merch_cart'}" class="ipsButton ipsButton_small ipsButton_primary ipsPos_right">
+                            {lang="review_and_checkout"}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </li>
+    {{if $sep}}
+	    <li class='elUserNav_sep' id='printfulCart_sep'></li>
+    {{endif}}
+{{else}}
+	<li class='cUserNav_icon ipsHide' id='printfulCart_container'></li>
+    {{if $sep}}
+	    <li class='elUserNav_sep ipsHide' id='printfulCart_sep'></li>
+    {{endif}}
+{{endif}}

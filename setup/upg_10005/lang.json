@@ -1,0 +1,17 @@
+{
+    "normal": {
+        "added": [
+            "frontnavigation_printfulintegration_store",
+            "printful_orders"
+        ],
+        "edited": [
+            "shipping_method_option"
+        ],
+        "removed": []
+    },
+    "js": {
+        "added": [],
+        "edited": [],
+        "removed": []
+    }
+}

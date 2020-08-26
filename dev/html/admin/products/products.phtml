@@ -1,0 +1,31 @@
+<ips:template parameters="$storeName, $products, $pagination, $search=NULL, $noKey=FALSE" />
+{{if $noKey}}
+    <div class="ipsMessage ipsMessage_info">
+        {lang="printful_no_api_key" sprintf="\IPS\Http\Url::internal('app=printfulintegration&module=overview&controller=settings')"}
+    </div>
+{{else}}
+    <div data-controller="printfulintegration.admin.products.list" class='ipsBox' id="printfulStore">
+        <form data-baseurl='{url="app=printfulintegration&module=overview&controller=products" csrf="1"}' action="{expression='\IPS\Http\Url::internal("app=printfulintegration&module=overview&controller=products&do=import")->setQueryString("parent", \IPS\Request::i()->parent)->csrf()'}" method="get">
+            <input type="hidden" name="process">
+            <div class="ipsBox_titleBar ipsAreaBackground_light ipsAreaBackground_rounded">
+                {$storeName}
+                <div class="printfulSearch">
+                    <input type="text" class="" id="printfulSearch" placeholder="{lang='printful_search'}" {{if !empty($search)}}value="{$search}"{{endif}} autocomplete="off" spellcheck="false" minlength="3">
+                    <i class="fa fa-search" data-action="submitSearch"></i>
+                </div>
+            </div>
+            {template="productsList" group="products" app="printfulintegration" location="admin" params="$products, $pagination"}
+            <div class="ipsPageAction" style='display: none;'>
+                <ul class="ipsList_inline ipsList_reset" data-role="actionItems">
+                    <li data-role="count"></li>
+                    <li data-role="actionMenu" data-action="process" data-ipstooltip _title="{lang='printful_process'}">
+                        <i class="fa fa-arrow-right ipsPageAction_icon"></i>
+                    </li>
+                    <li data-role="actionMenu" data-action="cancel" data-ipstooltip _title="{lang='printful_cancel'}">
+                        <i class="fa fa-ban ipsPageAction_icon"></i>
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
+{{endif}}

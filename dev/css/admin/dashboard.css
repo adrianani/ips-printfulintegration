@@ -1,0 +1,14 @@
+.pDataValue {
+  font-size: 24px;
+  font-weight: 300;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.pDataValue_positive {
+  color: #40bb40;
+}
+
+.pDataValue_negative {
+  color: #d14141;
+}
+/*# sourceMappingURL=dashboard.css.map */

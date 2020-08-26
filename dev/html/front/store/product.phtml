@@ -1,0 +1,26 @@
+<ips:template parameters="$product, $form" />
+
+<div data-controller="printful.product.page">
+    <div id="productInfo">
+        <div class="ipsColumns">
+            <div class="ipsColumn ipsColumn_veryWide">
+                <div class="productImageCarousel">
+                    {{foreach $product->images as $image}}
+                        <img src="{file='$image' extension='printfulintegration_ProductImage'}" data-ipsLightbox />
+                    {{endforeach}}
+                </div>
+            </div>
+            <div class="ipsColumn ipsColumn_fluid">
+                <div class="ipsType_pageTitle ipsType_largeTitle">
+                    {$product->_title}
+                </div>
+                <div class="cPrintful_itemPrice" data-url="{$product->url()}&do=price">
+                    {$product->priceToDisplay()|raw}
+                </div>
+                <div class="ipsAreaBackground ipsPad cPrintful_itemForm">
+                    {$form|raw}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

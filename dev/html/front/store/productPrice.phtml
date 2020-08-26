@@ -1,0 +1,11 @@
+<ips:template parameters="$price = NULL" />
+{{if $price === NULL}}
+	<i class="ipsType_light ipsType_large ipsType_unbold">
+		{lang="printful_not_available"}
+	</i>
+{{else}}
+	{$price}
+	{{if settings.nexus_show_tax and settings.printful_tax and \IPS\Member::loggedIn()->language()->checkKeyExists('nexus_tax_explain_val')}}
+		<span class='ipsType_small ipsType_unbold ipsType_light'>{lang="nexus_tax_explain_val"}</span>
+	{{endif}}
+{{endif}}

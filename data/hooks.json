@@ -1,0 +1,18 @@
+{
+    "F_Core_global": {
+        "type": "S",
+        "class": "\\IPS\\Theme\\class_core_front_global"
+    },
+    "N_Invoice": {
+        "type": "C",
+        "class": "\\IPS\\nexus\\Invoice"
+    },
+    "XF_Clients_Invoices": {
+        "type": "C",
+        "class": "\\IPS\\nexus\\modules\\front\\clients\\invoices"
+    },
+    "XF_Clients_Purchases": {
+        "type": "C",
+        "class": "\\IPS\\nexus\\modules\\front\\clients\\purchases"
+    }
+}

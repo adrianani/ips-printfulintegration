@@ -1,0 +1,17 @@
+<ips:template parameters="$items" />
+
+<ul class="ipsSideMenu_list">
+    {{foreach $items as $item}}
+        <li>
+            <a href='{$item->url()}' class="ipsSideMenu_item{{if \IPS\Request::i()->category == $item->id}} ipsSideMenu_itemActive{{endif}}">
+                {$item->_title}
+                <div class="ipsSideMenu_itemCount">
+                    {expression="\IPS\printfulintegration\Product::countWhere('view', NULL, ['parent=?', $item->id])"}
+                </div>
+            </a>
+            {{if $children = $item->children('view', NULL, FALSE, 0)}}
+                {template="menuChildren" app="printfulintegration" group="store" location="front" params="$children"}
+            {{endif}}
+        </li>
+    {{endforeach}}
+</ul>

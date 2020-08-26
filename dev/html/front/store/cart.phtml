@@ -1,0 +1,21 @@
+<ips:template parameters="" />
+
+<div class="ipsBox_alt" data-role="merchCart">
+    <div class="ipsPad ipsType_center">
+		<i class="ipsType_huge fa fa-shopping-bag"></i>
+		<h1 class="ipsType_reset ipsType_veryLarge ipsType_center">{lang="printful_cart"}</h1>
+    </div>
+    <div data-controller="printful.cart.review">
+        <div class="ipsBox ipsPad" data-role='merchCartContent'>
+            {template='cartContents' app='printfulintegration' group='store' location='front'}
+        </div>
+        <ul class="ipsToolList ipsToolList_horizontal ipsClearfix ipsSpacer_both">
+            <li class="ipsPos_left">
+                <a class="ipsButton ipsButton_medium ipsButton_link ipsButton_narrow" href="{url='app=printfulintegration&module=store&controller=cart&do=clear' csrf='1' seoTemplate='merch_cart'}" data-confirm><i class="fa fa-times"></i> {lang="empty_cart"}</a>
+            </li>
+            <li class="ipsToolList_primaryAction">
+                <a id="cartCheckout" class="ipsButton ipsButton_large ipsButton_important ipsButton_fullWidth" data-ipsDialog data-ipsDialog-title="{lang='choose_shipping_address'}" href="{url='app=printfulintegration&module=store&controller=cart&do=checkout' csrf='1' seoTemplate='merch_cart'}"><i class="fa fa-money"></i>&nbsp; Checkout</a>
+            </li>
+        </ul>
+    </div>
+</div>

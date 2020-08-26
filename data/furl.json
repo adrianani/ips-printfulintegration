@@ -1,0 +1,27 @@
+{
+    "topLevel": "",
+    "pages": {
+        "merch_cart": {
+            "friendly": "merch/cart",
+            "real": "app=printfulintegration&module=store&controller=cart"
+        },
+        "merch_product": {
+            "friendly": "merch/product/{#id}-{?}",
+            "real": "app=printfulintegration&module=store&controller=product",
+            "verify": "\\IPS\\printfulintegration\\Product"
+        },
+        "merch_category": {
+            "friendly": "merch/category/{#category}-{?}",
+            "real": "app=printfulintegration&module=store&controller=store",
+            "verify": "\\IPS\\printfulintegration\\Category"
+        },
+        "merch_store": {
+            "friendly": "merch",
+            "real": "app=printfulintegration&module=store&controller=store"
+        },
+        "merch_orders": {
+            "friendly": "merch/orders",
+            "real": "app=printfulintegration&module=store&controller=orders"
+        }
+    }
+}

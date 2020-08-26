@@ -1,0 +1,33 @@
+<ips:template parameters="$data, $chart, $invoices" />
+<div id="pDashboard">
+    <div class="ipsGrid ipsGrid_collapse_tablet">
+        <div class="ipsGrid_span9">
+            {$chart|raw}
+        </div>
+        <div class="ipsGrid_span3">
+            <div class="ipsBox">
+				<div class="ipsBox_titleBar">{lang="printful_dashboard_quickstats"}</div>
+				<div class="ipsPad">
+					{{foreach $data as $k => $val}}
+						<div class="pData{{if $k != 3}} ipsSpacer_bottom{{endif}}">
+							<div class="ipsType_noBreak pDataValue pDataValue_{{if $val->progress}}positive{{else}}negative{{endif}}">
+								{$val->total}
+								{{if $val->progress}}
+									<i class="fa fa-arrow-circle-up ipsPos_right" aria-hidden="true"></i>
+								{{else}}
+									<i class="fa fa-arrow-circle-down ipsPos_right" aria-hidden="true"></i>
+								{{endif}}
+							</div>
+							<h3 class="ipsType_reset ipsType_minorHeading ipsTruncate ipsTruncate_line">
+								{$val->title}
+							</h3>
+						</div>
+					{{endforeach}}
+				</div>
+            </div>
+        </div>
+	</div>
+	<div class="ipsBox">
+		{$invoices|raw}
+	</div>
+</div>

@@ -1,0 +1,16 @@
+{
+    "admin": {
+        "overview": {
+            "default_controller": "",
+            "protected": 0,
+            "default": 0
+        }
+    },
+    "front": {
+        "store": {
+            "default_controller": "store",
+            "protected": 0,
+            "default": 0
+        }
+    }
+}

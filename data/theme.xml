@@ -1,0 +1,775 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<theme name="Default" author_name="Invision Power Services, Inc" author_url="https://www.invisioncommunity.com">
+ <template template_group="checkout" template_name="shippingAddress" template_data="$id, $action, $elements, $hiddenValues, $actionButtons, $uploadField, $class='', $attributes=array(), $sidebar, $form=NULL" template_location="front" template_app="printfulintegration"><![CDATA[
+<div id="printful_choose_address" data-controller="printful.cart.checkout">
+    {template="popupTemplate" app="core" group="forms" location="front" params="$id, $action, $elements, $hiddenValues, $actionButtons, $uploadField, $class, $attributes, $sidebar, $form"}
+</div>]]></template>
+ <template template_group="clients" template_name="invoiceList" template_data="$invoice, $fromBillingAgreement=NULL" template_location="front" template_app="printfulintegration">&#13;
+{template=&quot;invoiceList&quot; app=&quot;nexus&quot; group=&quot;clients&quot; params=&quot;$invoice, $fromBillingAgreement&quot;}</template>
+ <template template_group="dashboard" template_name="dashboard" template_data="$data, $chart, $invoices" template_location="admin" template_app="printfulintegration"><![CDATA[<div id="pDashboard">
+    <div class="ipsGrid ipsGrid_collapse_tablet">
+        <div class="ipsGrid_span9">
+            {$chart|raw}
+        </div>
+        <div class="ipsGrid_span3">
+            <div class="ipsBox">
+				<div class="ipsBox_titleBar">{lang="printful_dashboard_quickstats"}</div>
+				<div class="ipsPad">
+					{{foreach $data as $k => $val}}
+						<div class="pData{{if $k != 3}} ipsSpacer_bottom{{endif}}">
+							<div class="ipsType_noBreak pDataValue pDataValue_{{if $val->progress}}positive{{else}}negative{{endif}}">
+								{$val->total}
+								{{if $val->progress}}
+									<i class="fa fa-arrow-circle-up ipsPos_right" aria-hidden="true"></i>
+								{{else}}
+									<i class="fa fa-arrow-circle-down ipsPos_right" aria-hidden="true"></i>
+								{{endif}}
+							</div>
+							<h3 class="ipsType_reset ipsType_minorHeading ipsTruncate ipsTruncate_line">
+								{$val->title}
+							</h3>
+						</div>
+					{{endforeach}}
+				</div>
+            </div>
+        </div>
+	</div>
+	<div class="ipsBox">
+		{$invoices|raw}
+	</div>
+</div>]]></template>
+ <template template_group="products" template_name="pricing" template_data="$matrix" template_location="admin" template_app="printfulintegration"><![CDATA[
+<div class="ipsMessage ipsMessage_info">
+    <div class="ipsType_large">
+        {lang='printful_no_pricing_sync'}
+    </div>
+</div>
+{$matrix|raw}]]></template>
+ <template template_group="products" template_name="product" template_data="$id, $name, $variants, $thumbnail" template_location="admin" template_app="printfulintegration"><![CDATA[{{$imported = \IPS\printfulintegration\Api::i()->isImported( $id );}}
+<div class="ipsBox{{if $imported}} disabled{{endif}}">
+    <img src="$thumbnail" alt="$name">
+    <div class="ipsAreaBackground productInfo">
+        <div>
+            <h3 class="ipsType_normal ipsType_reset ipsTruncate ipsTruncate_line">
+                {$name}
+            </h3>
+            <div class="ipsType_light">
+                {lang="printful_variants_no" pluralize="$variants"}
+            </div>
+        </div>
+        {{if !$imported}}
+            <div>
+                <button class="ipsButton ipsButton_primary ipsButton_medium" data-action='markForImport' data-product-id="{$id}" data-ipsTooltip _title='{lang="printful_add_to_store"}'>
+                    <i class="fa fa-plus"></i>
+                </button>
+            </div>
+        {{endif}}
+    </div>
+</div>]]></template>
+ <template template_group="products" template_name="products" template_data="$storeName, $products, $pagination, $search=NULL, $noKey=FALSE" template_location="admin" template_app="printfulintegration"><![CDATA[{{if $noKey}}
+    <div class="ipsMessage ipsMessage_info">
+        {lang="printful_no_api_key" sprintf="\IPS\Http\Url::internal('app=printfulintegration&module=overview&controller=settings')"}
+    </div>
+{{else}}
+    <div data-controller="printfulintegration.admin.products.list" class='ipsBox' id="printfulStore">
+        <form data-baseurl='{url="app=printfulintegration&module=overview&controller=products" csrf="1"}' action="{expression='\IPS\Http\Url::internal("app=printfulintegration&module=overview&controller=products&do=import")->setQueryString("parent", \IPS\Request::i()->parent)->csrf()'}" method="get">
+            <input type="hidden" name="process">
+            <div class="ipsBox_titleBar ipsAreaBackground_light ipsAreaBackground_rounded">
+                {$storeName}
+                <div class="printfulSearch">
+                    <input type="text" class="" id="printfulSearch" placeholder="{lang='printful_search'}" {{if !empty($search)}}value="{$search}"{{endif}} autocomplete="off" spellcheck="false" minlength="3">
+                    <i class="fa fa-search" data-action="submitSearch"></i>
+                </div>
+            </div>
+            {template="productsList" group="products" app="printfulintegration" location="admin" params="$products, $pagination"}
+            <div class="ipsPageAction" style='display: none;'>
+                <ul class="ipsList_inline ipsList_reset" data-role="actionItems">
+                    <li data-role="count"></li>
+                    <li data-role="actionMenu" data-action="process" data-ipstooltip _title="{lang='printful_process'}">
+                        <i class="fa fa-arrow-right ipsPageAction_icon"></i>
+                    </li>
+                    <li data-role="actionMenu" data-action="cancel" data-ipstooltip _title="{lang='printful_cancel'}">
+                        <i class="fa fa-ban ipsPageAction_icon"></i>
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
+{{endif}}]]></template>
+ <template template_group="products" template_name="productsList" template_data="$products, $pagination" template_location="admin" template_app="printfulintegration"><![CDATA[
+<div data-role="printfulProducts" class='ipsPad'>
+    <div class="ipsSpacer_bottom">
+        {$pagination|raw}
+    </div>
+    <div class='productsGrid'>
+        {{if \count($products) > 0}}
+            {{foreach $products as $product}}
+                {template="product" group="products" app="printfulintegration" location="admin" params="$product['id'], $product['name'], $product['variants'], $product['thumbnail_url']"}
+            {{endforeach}}
+        {{else}}
+            <div class="ipsPad">
+                {lang="printful_search_empty"}
+            </div>
+        {{endif}}
+    </div>
+    <div>
+        {$pagination|raw}
+    </div>
+</div>]]></template>
+ <template template_group="store" template_name="cart" template_data="" template_location="front" template_app="printfulintegration"><![CDATA[
+<div class="ipsBox_alt" data-role="merchCart">
+    <div class="ipsPad ipsType_center">
+		<i class="ipsType_huge fa fa-shopping-bag"></i>
+		<h1 class="ipsType_reset ipsType_veryLarge ipsType_center">{lang="printful_cart"}</h1>
+    </div>
+    <div data-controller="printful.cart.review">
+        <div class="ipsBox ipsPad" data-role='merchCartContent'>
+            {template='cartContents' app='printfulintegration' group='store' location='front'}
+        </div>
+        <ul class="ipsToolList ipsToolList_horizontal ipsClearfix ipsSpacer_both">
+            <li class="ipsPos_left">
+                <a class="ipsButton ipsButton_medium ipsButton_link ipsButton_narrow" href="{url='app=printfulintegration&module=store&controller=cart&do=clear' csrf='1' seoTemplate='merch_cart'}" data-confirm><i class="fa fa-times"></i> {lang="empty_cart"}</a>
+            </li>
+            <li class="ipsToolList_primaryAction">
+                <a id="cartCheckout" class="ipsButton ipsButton_large ipsButton_important ipsButton_fullWidth" data-ipsDialog data-ipsDialog-title="{lang='choose_shipping_address'}" href="{url='app=printfulintegration&module=store&controller=cart&do=checkout' csrf='1' seoTemplate='merch_cart'}"><i class="fa fa-money"></i>&nbsp; Checkout</a>
+            </li>
+        </ul>
+    </div>
+</div>]]></template>
+ <template template_group="store" template_name="cartContents" template_data="" template_location="front" template_app="printfulintegration"><![CDATA[{{$currency = ( isset( \IPS\Request::i()->cookie['currency'] ) and \in_array( \IPS\Request::i()->cookie['currency'], \IPS\nexus\Money::currencies() ) ) ? \IPS\Request::i()->cookie['currency'] : \IPS\nexus\Customer::loggedIn()->defaultCurrency();}}
+{{if isset( $_SESSION['printful_cart'] ) and \count( $_SESSION['printful_cart'] )}}
+    {{$subtotal = new \IPS\Math\Number('0');}}
+    <div class="ipsDataList">
+        {{foreach $_SESSION['printful_cart'] as $id => $item}}
+            <li class="ipsDataItem printfulCart_item">
+                <div class="ipsDataItem_icon">
+                    <img src='{file="$item->extra['image']" extension="printfulintegration_ProductImage"}' alt="{$item->name}" class="ipsThumb ipsThumb_medium">
+                </div>
+                <div class="ipsDataItem_main">
+                    <a href="{$item->url}" class="ipsType_sectionHead ipsType_blendLinks">
+                        <strong>
+                            {$item->name}
+                        </strong>
+                    </a>
+                    <div class="ipsType_normal ipsType_light">
+                        {{if $item->extra['color']}}
+                            <strong>
+                                {lang="printful_item_color"}:
+                            </strong>
+                            {$item->extra['color']}
+                            &middot;
+                        {{endif}}
+                        {{if $item->extra['size']}}
+                            <strong>
+                                {lang="printful_item_size"}:
+                            </strong>
+                            {$item->extra['size']}
+                        {{endif}}
+                    </div>
+                </div>
+                <div class="ipsDataItem_generic ipsType_large ipsDataItem_size1 ipsType_center">
+                    <form action='{url="app=printfulintegration&module=store&controller=cart&do=quantity&item=$id" csrf="1"}' method="get" data-role="quantityForm">
+                        <select type='number' name="item_{$item->id}">
+                            {{for $i=1; $i <= 50; $i++}}
+                                <option value="{$i}"{{if $item->quantity == $i}} selected{{endif}}>{$i}</option>
+                            {{endfor;}}
+                        </select>
+                    </form>
+                </div>
+                <div class="ipsDataItem_generic ipsType_normal ipsDataItem_size3 ipsType_center">
+                    <a href="{url='app=printfulintegration&module=store&controller=cart&do=quantity&item=$id&quantity=0' csrf='1'}" class="ipsButton ipsButton_small ipsButton_negative" data-confirm data-ipsTooltip _title="{lang='remove_from_cart'}">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </div>
+                <div class="ipsDataItem_generic ipsDataItem_size4 ipsType_large ipsType_right">
+                    <strong style="color: {theme='price'};">
+                        {{$totalPrice=$item->linePrice();}}
+                        {$totalPrice}
+                        {{$subtotal = $subtotal->add($totalPrice->amount);}}
+                    </strong>
+                    {{if $item->quantity > 1}}
+                        <p class='ipsType_reset ipsType_medium ipsType_light'>
+                            {lang="each_short" sprintf="$item->price"}
+                        </p>
+                    {{endif}}
+                </div>
+            </li>
+        {{endforeach}}
+    </div>
+    <hr class='ipsHr' style="border-width: 0 0 2px 0; border-color: #ddd;"/>
+    <div class="ipsPad ipsType_right">
+        <span class="ipsType_sectionHead">
+            <strong>
+                {lang="subtotal"}:
+                <span style="color: {theme='price'};">{money="$subtotal" currency="$currency"}</span>
+            </strong>
+        </span>
+    </div>
+{{else}}
+    <div class="ipsType_light ipsType_large ipsType_center">
+        {lang="printful_empty_cart"}
+        <br />
+        <br />
+        <a href="{url='app=printfulintegration&module=store&controller=store'}" class="ipsButton ipsButton_primary ipsButton_medium">
+            {lang="printful_go_shopping"} 
+        </a>
+    </div>
+{{endif}}]]></template>
+ <template template_group="store" template_name="cartReview" template_data="$success = FALSE, $quantity = NULL, $productTitle = NULL" template_location="front" template_app="printfulintegration"><![CDATA[
+<div class="ipsPad">
+{{if $success}}
+    <div class="ipsBox ipsPad_half ipsSpacer_bottom">
+        <div class="ipsType_center ipsPad_half">
+            <div class="ipsType_veryLarge ipsType_positive">
+                <i class="fa fa-smile-o"></i>
+            </div>
+            <div class="ipsType_sectionHead ipsType_positive">
+                {lang="printful_added_to_cart"}
+            </div>
+        </div>
+        <hr class="ipsHr ipsHr_small" />
+        <div>
+            <span class="ipsType_large ipsType_bold">
+                {$productTitle}
+            </span>
+            <span class="ipsType_normal ipsPos_right">
+                {lang="quantity"}: {$quantity}
+            </span>
+        </div>
+    </div>
+    <ul class="ipsGrid ipsGrid_collapsePhone">
+        <li class="ipsGrid_span6" style="margin-bottom: 0;">
+            <a href="#" data-action="dialogClose" class="ipsButton ipsButton_fullWidth ipsButton_light ipsButton_medium">{lang="continue_shopping"}</a>
+        </li>
+        <li class="ipsGrid_span6" style="margin-bottom: 0;">
+            <a href="{url='app=printfulintegration&module=store&controller=cart' seoTemplate='merch_cart'}" class="ipsButton ipsButton_fullWidth ipsButton_primary ipsButton_medium">{lang="review_and_checkout"}</a>
+        </li>
+    </ul>
+{{else}}
+    <div class="ipsBox ipsPad_half ipsSpacer_bottom">
+        <div class="ipsType_center ipsPad_half">
+            <div class="ipsType_veryLarge ipsType_negative">
+                <i class="fa fa-frown-o"></i>
+            </div>
+            <div class="ipsType_sectionHead ipsType_negative">
+                {lang="printful_not_available"}
+            </div>
+        </div>
+    </div>
+    <a href="#" data-action="dialogClose" class="ipsButton ipsButton_fullWidth ipsButton_light ipsButton_medium">{lang="continue_shopping"}</a>
+{{endif}}
+</div>]]></template>
+ <template template_group="store" template_name="cartUserBar" template_data="$sep = TRUE" template_location="front" template_app="printfulintegration"><![CDATA[{{$currency = ( isset( \IPS\Request::i()->cookie['currency'] ) and \in_array( \IPS\Request::i()->cookie['currency'], \IPS\nexus\Money::currencies() ) ) ? \IPS\Request::i()->cookie['currency'] : \IPS\nexus\Customer::loggedIn()->defaultCurrency();}}
+{{if isset( $_SESSION['printful_cart'] ) and \count( $_SESSION['printful_cart'] )}}
+	{{$subtotal = new \IPS\Math\Number('0');}}
+    <li class="cUserNav_icon" id="printfulCart_container">
+        <a href="{url='app=printfulintegration&module=store&controller=cart' seoTemplate='merch_cart'}" id="printfulCart" data-ipsMenu data-ipsMenu-closeOnClick='false' data-ipsTooltip _title="{lang='printful_cart'}">
+            <i class="fa fa-shopping-bag" aria-hidden="true"></i> 
+            <span class='ipsNotificationCount'>{expression="\IPS\printfulintegration\Application::cartCount()"}</span>
+        </a>
+        <div id="printfulCart_menu" class="ipsMenu ipsMenu_wide ipsHide">
+            <div class="ipsMenu_headerBar">
+                <h4 class="ipsType_sectionHead">
+                    {lang='printful_cart'}
+                </h4>
+            </div>
+            <div class="ipsMenu_content ipsPad_half">
+                <ul id="printfulCartContent" class="ipsDataList" data-role="cartList">
+                    {{foreach $_SESSION['printful_cart'] as $id => $item}}
+                        <li class="ipsDataItem printfulCart_item">
+                            <div class="ipsDataItem_icon">
+                                <img src='{file="$item->extra['image']" extension="printfulintegration_ProductImage"}' alt="{$item->name}" class="ipsThumb ipsThumb_small">
+                            </div>
+                            <div class="ipsDataItem_main">
+                                <strong><a href="{$item->url}" class="ipsType_large ipsType_blendLinks">{$item->name}</a></strong>
+                                <div class="ipsType_medium ipsType_light">
+                                    {{if $item->extra['color']}}
+                                        <strong>
+                                            {lang="printful_item_color"}:
+                                        </strong>
+                                        {$item->extra['color']}
+                                        <br />
+                                    {{endif}}
+                                    {{if $item->extra['size']}}
+                                        <strong>
+                                            {lang="printful_item_size"}:
+                                        </strong>
+                                        {$item->extra['size']}
+                                    {{endif}}
+                                </div>
+                            </div>
+                            <div class="ipsDataItem_generic ipsDataItem_size1 ipsType_center">
+                                &times;{$item->quantity}
+                            </div>
+                            <div class="ipsDataItem_generic ipsDataItem_size3 ipsType_normal ipsType_right">
+                                <strong style="color: {theme='price'};">
+                                    {{$totalPrice=$item->linePrice();}}
+                                    {$totalPrice}
+                                    {{$subtotal = $subtotal->add($totalPrice->amount);}}
+                                </strong>
+								{{if $item->quantity > 1}}
+									<p class='ipsType_reset ipsType_small ipsType_light'>
+										{lang="each_short" sprintf="$item->price"}
+									</p>
+								{{endif}}
+                            </div>
+                        </li>
+                    {{endforeach}}
+                </ul>
+            </div>
+            <div class="ipsMenu_footerBar">
+                <div class="ipsColumns">
+                    <div class="ipsType_large ipsColumn ipsColumn_medium" style="vertical-align: middle;">
+                        <strong>
+                            {lang="subtotal"}:
+                            <span style="color: {theme='price'};">{money="$subtotal" currency="$currency"}</span>
+                        </strong>
+                    </div>
+                    <div class="ipsColumn ipsColumn_medium">
+                        <a href="{url='app=printfulintegration&module=store&controller=cart' seoTemplate='merch_cart'}" class="ipsButton ipsButton_small ipsButton_primary ipsPos_right">
+                            {lang="review_and_checkout"}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </li>
+    {{if $sep}}
+	    <li class='elUserNav_sep' id='printfulCart_sep'></li>
+    {{endif}}
+{{else}}
+	<li class='cUserNav_icon ipsHide' id='printfulCart_container'></li>
+    {{if $sep}}
+	    <li class='elUserNav_sep ipsHide' id='printfulCart_sep'></li>
+    {{endif}}
+{{endif}}]]></template>
+ <template template_group="store" template_name="menu" template_data="$categories" template_location="front" template_app="printfulintegration"><![CDATA[
+<div class="ipsBox ipsPad_half" data-role="categoryList">
+    <div class="ipsSideMenu ipsSideMenu_withRadios ipsType_medium" id="merchCategories">
+        <ul class="ipsSideMenu_list">
+            {{foreach $categories as $category}}
+                <li>
+                    <a href='{$category->url()}' class="ipsSideMenu_item{{if \IPS\Request::i()->category == $category->id}} ipsSideMenu_itemActive{{endif}}">
+                        <strong>{$category->_title}</strong>
+                    </a>
+                    {{if $children = $category->children('view', NULL, FALSE)}}
+                        {template="menuChildren" app="printfulintegration" group="store" location="front" params="$children"}
+                    {{endif}}
+                </li>
+            {{endforeach}}
+        </ul>
+    </div>
+</div>]]></template>
+ <template template_group="store" template_name="menuChildren" template_data="$items" template_location="front" template_app="printfulintegration"><![CDATA[
+<ul class="ipsSideMenu_list">
+    {{foreach $items as $item}}
+        <li>
+            <a href='{$item->url()}' class="ipsSideMenu_item{{if \IPS\Request::i()->category == $item->id}} ipsSideMenu_itemActive{{endif}}">
+                {$item->_title}
+                <div class="ipsSideMenu_itemCount">
+                    {expression="\IPS\printfulintegration\Product::countWhere('view', NULL, ['parent=?', $item->id])"}
+                </div>
+            </a>
+            {{if $children = $item->children('view', NULL, FALSE, 0)}}
+                {template="menuChildren" app="printfulintegration" group="store" location="front" params="$children"}
+            {{endif}}
+        </li>
+    {{endforeach}}
+</ul>]]></template>
+ <template template_group="store" template_name="product" template_data="$product, $form" template_location="front" template_app="printfulintegration"><![CDATA[
+<div data-controller="printful.product.page">
+    <div id="productInfo">
+        <div class="ipsColumns">
+            <div class="ipsColumn ipsColumn_veryWide">
+                <div class="productImageCarousel">
+                    {{foreach $product->images as $image}}
+                        <img src="{file='$image' extension='printfulintegration_ProductImage'}" data-ipsLightbox />
+                    {{endforeach}}
+                </div>
+            </div>
+            <div class="ipsColumn ipsColumn_fluid">
+                <div class="ipsType_pageTitle ipsType_largeTitle">
+                    {$product->_title}
+                </div>
+                <div class="cPrintful_itemPrice" data-url="{$product->url()}&do=price">
+                    {$product->priceToDisplay()|raw}
+                </div>
+                <div class="ipsAreaBackground ipsPad cPrintful_itemForm">
+                    {$form|raw}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>]]></template>
+ <template template_group="store" template_name="productPrice" template_data="$price = NULL" template_location="front" template_app="printfulintegration"><![CDATA[{{if $price === NULL}}
+	<i class="ipsType_light ipsType_large ipsType_unbold">
+		{lang="printful_not_available"}
+	</i>
+{{else}}
+	{$price}
+	{{if settings.nexus_show_tax and settings.printful_tax and \IPS\Member::loggedIn()->language()->checkKeyExists('nexus_tax_explain_val')}}
+		<span class='ipsType_small ipsType_unbold ipsType_light'>{lang="nexus_tax_explain_val"}</span>
+	{{endif}}
+{{endif}}]]></template>
+ <template template_group="store" template_name="store" template_data="$products, $pagination, $currency" template_location="front" template_app="printfulintegration"><![CDATA[
+<div data-controller="store.merch.list">
+    <div data-role="contentContainer">
+        {template="storeContent" group="store" location="front" app="printfulintegration" params="$products, $pagination, $currency"}
+    </div>
+</div>]]></template>
+ <template template_group="store" template_name="storeContent" template_data="$products, $pagination, $currency" template_location="front" template_app="printfulintegration"><![CDATA[{{$currencies = \count(\IPS\nexus\Money::currencies());}}
+<div class="ipsBox">
+    {{if !empty($pagination) || $currencies > 1}}
+    <div class="ipsButtonBar ipsPad_half ipsClearfix ipsClear">
+        {$pagination|raw}
+        {{if $currencies > 1}}
+            <div class="ipsButtonRow ipsPos_right ipsClearfix">
+                <li>
+                    <a id="elCurrency" href="#elCurrency_menu" data-ipsMenu>
+                        Currency: {$currency} &nbsp;
+                        <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul id="elCurrency_menu" class="ipsMenu ipsMenu_selectable ipsMenu_narrow ipsHide">
+                        {{foreach \IPS\nexus\Money::currencies() as $_currency}}
+                            <li class="ipsMenu_item{{if $_currency == $currency}} ipsMenu_itemChecked{{endif}}">
+                                <a href="{url='app=printfulintegration&module=store&controller=store&currency={$_currency}' seoTemplate='merch_store' csrf='1'}">
+                                    {$_currency}
+                                </a>
+                            </li>
+                        {{endforeach}}
+                    </ul>
+                </li>
+            </div>
+        {{endif}}
+    </div>
+    {{endif}}
+    <div class="productsGrid ipsPad">
+        {{foreach $products as $product}}
+            <a href="{$product->url()}">
+                <div class="productImage">
+                    <img src="{file='$product->image' extension='printfulintegration_ProductImage'}" alt="{$product->title}">
+                </div>
+                <div class="productData">
+                    <h3>{$product->_title}</h3>
+                    <div class="productPrice">{$product->priceToDisplay()|raw}</div>
+                    {{$colorCount = \count($product->colors);}}
+                    <i class="ipsType_light">
+                        {lang="printful_productColors" pluralize="$colorCount" sprintf="$colorCount"}
+                    </i>
+                </div>
+            </a>
+        {{endforeach}}
+        {{if \count($products) === 0}}
+            <div class="ipsPad ipsType_large ipsType_light ipsType_center" style="width: 100%;">
+                {lang="printful_store_404"}
+            </div>
+        {{endif}}
+    </div>
+    {{if !empty($pagination)}}
+        <div class="ipsButtonBar ipsPad_half ipsClearfix ipsClear">
+            {$pagination|raw}
+        </div>
+    {{endif}}
+</div>]]></template>
+ <css css_location="admin" css_app="printfulintegration" css_attributes="" css_path="." css_name="dashboard.css">.pDataValue {
+  font-size: 24px;
+  font-weight: 300;
+  font-family: &quot;HelveticaNeue-Light&quot;, &quot;Helvetica Neue Light&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;
+}
+
+.pDataValue_positive {
+  color: #40bb40;
+}
+
+.pDataValue_negative {
+  color: #d14141;
+}
+/*# sourceMappingURL=dashboard.css.map */</css>
+ <css css_location="front" css_app="printfulintegration" css_attributes="" css_path="." css_name="product.css">#addToCart {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+#addToCart input {
+  width: 90px;
+  border-radius: 5px 0 0 5px;
+}
+
+#addToCart button {
+  border-radius: 0 5px 5px 0;
+}
+
+.productImageCarousel {
+  width: 340px;
+  position: relative;
+}
+
+.productImageCarousel .slick-list {
+  border: 1px solid #e0e0e0;
+  -webkit-box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.1);
+          box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.productImageCarousel .slick-arrow {
+  border-radius: 15px;
+  border: 0;
+  height: 30px;
+  width: 30px;
+  background-color: #ddd;
+  color: black;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -moz-outline-radius: 16px;
+  position: absolute;
+  z-index: 5000;
+  top: calc(50% - 11px);
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
+
+.productImageCarousel .slick-arrow.slick-prev {
+  right: 10px;
+}
+
+.productImageCarousel .slick-arrow.slick-prev i {
+  -webkit-transform: translateX(1px);
+          transform: translateX(1px);
+}
+
+.productImageCarousel .slick-arrow.slick-next {
+  left: 10px;
+}
+
+.productImageCarousel .slick-arrow.slick-next i {
+  -webkit-transform: translateX(-1px);
+          transform: translateX(-1px);
+}
+
+.productImageCarousel .slick-dots {
+  display: -webkit-box !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  list-style: none;
+  padding: 0;
+  font-size: 0;
+  margin-top: 10px;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.productImageCarousel .slick-dots li {
+  margin-bottom: 10px;
+}
+
+.productImageCarousel .slick-dots li:not(:last-child) {
+  margin-right: 10px;
+}
+
+.productImageCarousel .slick-dots li.slick-active button {
+  background-color: #353c41;
+  -webkit-box-shadow: 0 0 0 1px #353c41;
+          box-shadow: 0 0 0 1px #353c41;
+}
+
+.productImageCarousel .slick-dots li button {
+  display: block;
+  padding: 0;
+  font-size: 0;
+  height: 16px;
+  width: 16px;
+  border-radius: 10px;
+  -webkit-box-shadow: 0 0 0 1px #aaa;
+          box-shadow: 0 0 0 1px #aaa;
+  border: 3px solid white;
+  background-color: #aaa;
+}
+
+.productImageCarousel .slick-track img {
+  width: 340px;
+  height: 340px;
+}
+
+.cPrintful_itemPrice {
+  font-size: 24px;
+  font-weight: bold;
+  padding: 10px 0;
+  margin-bottom: 20px;
+  color: #c02222;
+}
+
+.ipsApp .cPrintful_itemForm input[type=&quot;number&quot;] {
+  width: 60px;
+}
+
+.ipsApp .cPrintful_itemForm select {
+  width: 160px;
+}
+/*# sourceMappingURL=product.css.map */</css>
+ <css css_location="admin" css_app="printfulintegration" css_attributes="" css_path="." css_name="products.css"><![CDATA[#printfulStore #printfulSearch {
+  padding-right: 30px;
+}
+
+#printfulStore .printfulSearch {
+  position: relative;
+  float: right;
+}
+
+#printfulStore .printfulSearch > .fa {
+  position: absolute;
+  right: 10px;
+  top: 8px;
+  cursor: pointer;
+}
+
+#printfulStore button[data-action="unmarkForImport"] .fa-plus::before {
+  content: '\f05e';
+}
+
+#printfulStore .ipsBox_titleBar {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+#printfulStore .ipsBox.disabled {
+  opacity: .4;
+}
+
+#printfulStore .productsGrid {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (minmax(300px, 1fr))[auto-fit];
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 15px;
+  width: 100%;
+}
+
+#printfulStore .productsGrid .ipsBox {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#printfulStore .productsGrid .ipsBox > img {
+  width: 300px;
+  height: 300px;
+}
+
+#printfulStore .productsGrid .ipsBox .productInfo {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 12px;
+}
+/*# sourceMappingURL=products.css.map */]]></css>
+ <css css_location="front" css_app="printfulintegration" css_attributes="" css_path="." css_name="store.css"><![CDATA[.productsGrid {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.productsGrid > a {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  color: unset;
+  width: calc( 100% / 3 - 10px);
+  margin-bottom: 10px;
+}
+
+.productsGrid > a .productData {
+  margin-top: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  padding: 10px;
+}
+
+.productsGrid > a h3 {
+  font-size: 18px;
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+
+.productsGrid > a .productPrice {
+  font-size: 14px;
+  color: #b63f3f;
+  font-weight: bold;
+}
+
+.productsGrid > a:not(:nth-child(3n)) {
+  margin-right: 10px;
+}
+
+.productsGrid > a .productImage {
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+}
+
+.productsGrid > a .productImage img {
+  width: 100%;
+  height: 100%;
+  -webkit-transform: scale(1);
+          transform: scale(1);
+  -webkit-transition: -webkit-transform .3s;
+  transition: -webkit-transform .3s;
+  transition: transform .3s;
+  transition: transform .3s, -webkit-transform .3s;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.productsGrid > a .productImage:hover img {
+  -webkit-transform: scale(2);
+          transform: scale(2);
+  -webkit-transition: -webkit-transform 2s ease-out;
+  transition: -webkit-transform 2s ease-out;
+  transition: transform 2s ease-out;
+  transition: transform 2s ease-out, -webkit-transform 2s ease-out;
+}
+/*# sourceMappingURL=store.css.map */]]></css>
+</theme>

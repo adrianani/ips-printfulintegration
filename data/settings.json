@@ -1,0 +1,46 @@
+[
+    {
+        "key": "printful_api_key",
+        "default": ""
+    },
+    {
+        "key": "printful_conversion_rates",
+        "default": "{}"
+    },
+    {
+        "key": "printful_conversion_rates_custom",
+        "default": "{}"
+    },
+    {
+        "key": "printful_default_currency",
+        "default": ""
+    },
+    {
+        "key": "printful_methods",
+        "default": "*"
+    },
+    {
+        "key": "printful_price_exchange",
+        "default": "1"
+    },
+    {
+        "key": "printful_ps_email",
+        "default": ""
+    },
+    {
+        "key": "printful_ps_message",
+        "default": ""
+    },
+    {
+        "key": "printful_ps_phone",
+        "default": ""
+    },
+    {
+        "key": "printful_tax",
+        "default": "0"
+    },
+    {
+        "key": "printful_use_exchange_api",
+        "default": "1"
+    }
+]

@@ -1,0 +1,16 @@
+{
+    "added": [
+        "printful_api_key",
+        "printful_conversion_rates",
+        "printful_conversion_rates_custom",
+        "printful_default_currency",
+        "printful_price_exchange",
+        "printful_ps_email",
+        "printful_ps_message",
+        "printful_ps_phone",
+        "printful_tax",
+        "printful_use_exchange_api"
+    ],
+    "edited": [],
+    "removed": []
+}

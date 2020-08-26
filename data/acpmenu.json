@@ -1,0 +1,22 @@
+{
+    "overview": {
+        "dashboard": {
+            "tab": "printfulintegration",
+            "controller": "dashboard",
+            "do": "",
+            "restriction": "dashboard_manage"
+        },
+        "products": {
+            "tab": "printfulintegration",
+            "controller": "products",
+            "do": "",
+            "restriction": "products_manage"
+        },
+        "settings": {
+            "tab": "printfulintegration",
+            "controller": "settings",
+            "do": "",
+            "restriction": "settings_manage"
+        }
+    }
+}

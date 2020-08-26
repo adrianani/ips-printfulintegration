@@ -1,0 +1,17 @@
+{
+    "core": {
+        "FileStorage": {
+            "ProductImage": "IPS\\printfulintegration\\extensions\\core\\FileStorage\\ProductImage"
+        },
+        "FrontNavigation": {
+            "Merch": "IPS\\printfulintegration\\extensions\\core\\FrontNavigation\\Merch",
+            "MerchOrders": "IPS\\printfulintegration\\extensions\\core\\FrontNavigation\\MerchOrders",
+            "MerchStore": "IPS\\printfulintegration\\extensions\\core\\FrontNavigation\\MerchStore"
+        }
+    },
+    "nexus": {
+        "Item": {
+            "PrintfulProduct": "IPS\\printfulintegration\\extensions\\nexus\\Item\\PrintfulProduct"
+        }
+    }
+}

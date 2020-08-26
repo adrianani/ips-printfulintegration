@@ -1,0 +1,77 @@
+.productsGrid {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.productsGrid > a {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  color: unset;
+  width: calc( 100% / 3 - 10px);
+  margin-bottom: 10px;
+}
+
+.productsGrid > a .productData {
+  margin-top: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  padding: 10px;
+}
+
+.productsGrid > a h3 {
+  font-size: 18px;
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+
+.productsGrid > a .productPrice {
+  font-size: 14px;
+  color: #b63f3f;
+  font-weight: bold;
+}
+
+.productsGrid > a:not(:nth-child(3n)) {
+  margin-right: 10px;
+}
+
+.productsGrid > a .productImage {
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+}
+
+.productsGrid > a .productImage img {
+  width: 100%;
+  height: 100%;
+  -webkit-transform: scale(1);
+          transform: scale(1);
+  -webkit-transition: -webkit-transform .3s;
+  transition: -webkit-transform .3s;
+  transition: transform .3s;
+  transition: transform .3s, -webkit-transform .3s;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.productsGrid > a .productImage:hover img {
+  -webkit-transform: scale(2);
+          transform: scale(2);
+  -webkit-transition: -webkit-transform 2s ease-out;
+  transition: -webkit-transform 2s ease-out;
+  transition: transform 2s ease-out;
+  transition: transform 2s ease-out, -webkit-transform 2s ease-out;
+}
+/*# sourceMappingURL=store.css.map */

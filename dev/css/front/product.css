@@ -1,0 +1,133 @@
+#addToCart {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+#addToCart input {
+  width: 90px;
+  border-radius: 5px 0 0 5px;
+}
+
+#addToCart button {
+  border-radius: 0 5px 5px 0;
+}
+
+.productImageCarousel {
+  width: 340px;
+  position: relative;
+}
+
+.productImageCarousel .slick-list {
+  border: 1px solid #e0e0e0;
+  -webkit-box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.1);
+          box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.productImageCarousel .slick-arrow {
+  border-radius: 15px;
+  border: 0;
+  height: 30px;
+  width: 30px;
+  background-color: #ddd;
+  color: black;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -moz-outline-radius: 16px;
+  position: absolute;
+  z-index: 5000;
+  top: calc(50% - 11px);
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
+
+.productImageCarousel .slick-arrow.slick-prev {
+  right: 10px;
+}
+
+.productImageCarousel .slick-arrow.slick-prev i {
+  -webkit-transform: translateX(1px);
+          transform: translateX(1px);
+}
+
+.productImageCarousel .slick-arrow.slick-next {
+  left: 10px;
+}
+
+.productImageCarousel .slick-arrow.slick-next i {
+  -webkit-transform: translateX(-1px);
+          transform: translateX(-1px);
+}
+
+.productImageCarousel .slick-dots {
+  display: -webkit-box !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  list-style: none;
+  padding: 0;
+  font-size: 0;
+  margin-top: 10px;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.productImageCarousel .slick-dots li {
+  margin-bottom: 10px;
+}
+
+.productImageCarousel .slick-dots li:not(:last-child) {
+  margin-right: 10px;
+}
+
+.productImageCarousel .slick-dots li.slick-active button {
+  background-color: #353c41;
+  -webkit-box-shadow: 0 0 0 1px #353c41;
+          box-shadow: 0 0 0 1px #353c41;
+}
+
+.productImageCarousel .slick-dots li button {
+  display: block;
+  padding: 0;
+  font-size: 0;
+  height: 16px;
+  width: 16px;
+  border-radius: 10px;
+  -webkit-box-shadow: 0 0 0 1px #aaa;
+          box-shadow: 0 0 0 1px #aaa;
+  border: 3px solid white;
+  background-color: #aaa;
+}
+
+.productImageCarousel .slick-track img {
+  width: 340px;
+  height: 340px;
+}
+
+.cPrintful_itemPrice {
+  font-size: 24px;
+  font-weight: bold;
+  padding: 10px 0;
+  margin-bottom: 20px;
+  color: #c02222;
+}
+
+.ipsApp .cPrintful_itemForm input[type="number"] {
+  width: 60px;
+}
+
+.ipsApp .cPrintful_itemForm select {
+  width: 160px;
+}
+/*# sourceMappingURL=product.css.map */

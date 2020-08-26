@@ -1,0 +1,21 @@
+<ips:template parameters="$products, $pagination" />
+
+<div data-role="printfulProducts" class='ipsPad'>
+    <div class="ipsSpacer_bottom">
+        {$pagination|raw}
+    </div>
+    <div class='productsGrid'>
+        {{if \count($products) > 0}}
+            {{foreach $products as $product}}
+                {template="product" group="products" app="printfulintegration" location="admin" params="$product['id'], $product['name'], $product['variants'], $product['thumbnail_url']"}
+            {{endforeach}}
+        {{else}}
+            <div class="ipsPad">
+                {lang="printful_search_empty"}
+            </div>
+        {{endif}}
+    </div>
+    <div>
+        {$pagination|raw}
+    </div>
+</div>

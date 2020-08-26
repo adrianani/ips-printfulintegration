@@ -1,0 +1,18 @@
+{
+    "normal": {
+        "added": [
+            "printful_tab_store",
+            "printful_methods",
+            "printful_methods_desc"
+        ],
+        "edited": [],
+        "removed": [
+            "printful_tab_pricing"
+        ]
+    },
+    "js": {
+        "added": [],
+        "edited": [],
+        "removed": []
+    }
+}

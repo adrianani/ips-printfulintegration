@@ -1,0 +1,22 @@
+<ips:template parameters="$id, $name, $variants, $thumbnail" />
+{{$imported = \IPS\printfulintegration\Api::i()->isImported( $id );}}
+<div class="ipsBox{{if $imported}} disabled{{endif}}">
+    <img src="$thumbnail" alt="$name">
+    <div class="ipsAreaBackground productInfo">
+        <div>
+            <h3 class="ipsType_normal ipsType_reset ipsTruncate ipsTruncate_line">
+                {$name}
+            </h3>
+            <div class="ipsType_light">
+                {lang="printful_variants_no" pluralize="$variants"}
+            </div>
+        </div>
+        {{if !$imported}}
+            <div>
+                <button class="ipsButton ipsButton_primary ipsButton_medium" data-action='markForImport' data-product-id="{$id}" data-ipsTooltip _title='{lang="printful_add_to_store"}'>
+                    <i class="fa fa-plus"></i>
+                </button>
+            </div>
+        {{endif}}
+    </div>
+</div>

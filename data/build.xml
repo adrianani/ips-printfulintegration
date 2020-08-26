@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build>
+ <module key="admin/overview"><![CDATA[{"default_controller":"","protected":0,"default":0}]]></module>
+ <module key="front/store"><![CDATA[{"default_controller":"store","protected":0,"default":0}]]></module>
+ <task frequency="P0Y0M0DT12H0M0S">ConversionRatesUpdate</task>
+ <setting key="printful_api_key"><![CDATA[{"key":"printful_api_key","default":""}]]></setting>
+ <setting key="printful_conversion_rates"><![CDATA[{"key":"printful_conversion_rates","default":"{}"}]]></setting>
+ <setting key="printful_conversion_rates_custom"><![CDATA[{"key":"printful_conversion_rates_custom","default":"{}"}]]></setting>
+ <setting key="printful_default_currency"><![CDATA[{"key":"printful_default_currency","default":""}]]></setting>
+ <setting key="printful_methods"><![CDATA[{"key":"printful_methods","default":"*"}]]></setting>
+ <setting key="printful_price_exchange"><![CDATA[{"key":"printful_price_exchange","default":"1"}]]></setting>
+ <setting key="printful_ps_email"><![CDATA[{"key":"printful_ps_email","default":""}]]></setting>
+ <setting key="printful_ps_message"><![CDATA[{"key":"printful_ps_message","default":""}]]></setting>
+ <setting key="printful_ps_phone"><![CDATA[{"key":"printful_ps_phone","default":""}]]></setting>
+ <setting key="printful_tax"><![CDATA[{"key":"printful_tax","default":"0"}]]></setting>
+ <setting key="printful_use_exchange_api"><![CDATA[{"key":"printful_use_exchange_api","default":"1"}]]></setting>
+ <hook key="F_Core_global"><![CDATA[{"type":"S","class":"\\IPS\\Theme\\class_core_front_global"}]]></hook>
+ <hook key="N_Invoice"><![CDATA[{"type":"C","class":"\\IPS\\nexus\\Invoice"}]]></hook>
+ <hook key="XF_Clients_Invoices"><![CDATA[{"type":"C","class":"\\IPS\\nexus\\modules\\front\\clients\\invoices"}]]></hook>
+ <hook key="XF_Clients_Purchases"><![CDATA[{"type":"C","class":"\\IPS\\nexus\\modules\\front\\clients\\purchases"}]]></hook>
+</build>

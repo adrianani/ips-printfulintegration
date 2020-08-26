@@ -1,0 +1,228 @@
+{
+    "1": {
+        "method": "addColumn",
+        "params": [
+            "printfulintegration_invoices",
+            {
+                "name": "printful_order_total",
+                "type": "FLOAT",
+                "length": 20,
+                "decimals": 2,
+                "values": null,
+                "allow_null": false,
+                "default": "0.00",
+                "comment": "",
+                "unsigned": false,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
+            }
+        ]
+    },
+    "2": {
+        "method": "addColumn",
+        "params": [
+            "printfulintegration_products",
+            {
+                "name": "base_price",
+                "type": "FLOAT",
+                "length": 20,
+                "decimals": 4,
+                "values": null,
+                "allow_null": true,
+                "default": null,
+                "comment": "",
+                "unsigned": false,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
+            }
+        ]
+    },
+    "3": {
+        "method": "changeColumn",
+        "params": [
+            "printfulintegration_products",
+            "base_price",
+            {
+                "name": "base_price",
+                "type": "FLOAT",
+                "length": null,
+                "decimals": null,
+                "values": null,
+                "allow_null": true,
+                "default": null,
+                "comment": "",
+                "unsigned": false,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
+            }
+        ]
+    },
+    "4": {
+        "method": "changeColumn",
+        "params": [
+            "printfulintegration_variants",
+            "variant_id",
+            {
+                "name": "printful_id",
+                "type": "BIGINT",
+                "length": 20,
+                "decimals": null,
+                "values": [],
+                "allow_null": false,
+                "default": "0",
+                "comment": "",
+                "unsigned": true,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
+            }
+        ]
+    },
+    "5": {
+        "method": "changeColumn",
+        "params": [
+            "printfulintegration_variants",
+            "variant_color",
+            {
+                "name": "color",
+                "type": "VARCHAR",
+                "length": 64,
+                "decimals": null,
+                "values": [],
+                "allow_null": true,
+                "default": null,
+                "comment": "",
+                "unsigned": false,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
+            }
+        ]
+    },
+    "6": {
+        "method": "changeColumn",
+        "params": [
+            "printfulintegration_variants",
+            "variant_size",
+            {
+                "name": "size",
+                "type": "CHAR",
+                "length": 4,
+                "decimals": null,
+                "values": [],
+                "allow_null": true,
+                "default": null,
+                "comment": "",
+                "unsigned": false,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
+            }
+        ]
+    },
+    "7": {
+        "method": "changeColumn",
+        "params": [
+            "printfulintegration_product_images",
+            "url",
+            {
+                "name": "location",
+                "type": "VARCHAR",
+                "length": 255,
+                "decimals": null,
+                "values": [],
+                "allow_null": true,
+                "default": null,
+                "comment": "",
+                "unsigned": false,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
+            }
+        ]
+    },
+    "8": {
+        "method": "addColumn",
+        "params": [
+            "printfulintegration_product_images",
+            {
+                "name": "image_primary",
+                "type": "BIT",
+                "length": null,
+                "decimals": null,
+                "values": null,
+                "allow_null": false,
+                "default": "0",
+                "comment": "",
+                "unsigned": false,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
+            }
+        ]
+    },
+    "9": {
+        "method": "changeColumn",
+        "params": [
+            "printfulintegration_product_images",
+            "location",
+            {
+                "name": "image_location",
+                "type": "VARCHAR",
+                "length": 255,
+                "decimals": null,
+                "values": [],
+                "allow_null": true,
+                "default": null,
+                "comment": "",
+                "unsigned": false,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
+            }
+        ]
+    },
+    "10": {
+        "method": "addColumn",
+        "params": [
+            "printfulintegration_variants",
+            {
+                "name": "printful_variant_id",
+                "type": "BIGINT",
+                "length": 20,
+                "decimals": null,
+                "values": null,
+                "allow_null": true,
+                "default": null,
+                "comment": "",
+                "unsigned": true,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
+            }
+        ]
+    },
+    "11": {
+        "method": "addColumn",
+        "params": [
+            "printfulintegration_products",
+            {
+                "name": "image",
+                "type": "VARCHAR",
+                "length": 255,
+                "decimals": null,
+                "values": null,
+                "allow_null": true,
+                "default": null,
+                "comment": "",
+                "unsigned": false,
+                "zerofill": false,
+                "auto_increment": false,
+                "binary": false
+            }
+        ]
+    }
+}

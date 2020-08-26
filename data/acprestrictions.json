@@ -1,0 +1,13 @@
+{
+    "overview": {
+        "settings": {
+            "settings_manage": "settings_manage"
+        },
+        "dashboard": {
+            "dashboard_manage": "dashboard_manage"
+        },
+        "products": {
+            "products_manage": "products_manage"
+        }
+    }
+}

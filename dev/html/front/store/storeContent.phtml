@@ -1,0 +1,55 @@
+<ips:template parameters="$products, $pagination, $currency" />
+{{$currencies = \count(\IPS\nexus\Money::currencies());}}
+<div class="ipsBox">
+    {{if !empty($pagination) || $currencies > 1}}
+    <div class="ipsButtonBar ipsPad_half ipsClearfix ipsClear">
+        {$pagination|raw}
+        {{if $currencies > 1}}
+            <div class="ipsButtonRow ipsPos_right ipsClearfix">
+                <li>
+                    <a id="elCurrency" href="#elCurrency_menu" data-ipsMenu>
+                        Currency: {$currency} &nbsp;
+                        <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul id="elCurrency_menu" class="ipsMenu ipsMenu_selectable ipsMenu_narrow ipsHide">
+                        {{foreach \IPS\nexus\Money::currencies() as $_currency}}
+                            <li class="ipsMenu_item{{if $_currency == $currency}} ipsMenu_itemChecked{{endif}}">
+                                <a href="{url='app=printfulintegration&module=store&controller=store&currency={$_currency}' seoTemplate='merch_store' csrf='1'}">
+                                    {$_currency}
+                                </a>
+                            </li>
+                        {{endforeach}}
+                    </ul>
+                </li>
+            </div>
+        {{endif}}
+    </div>
+    {{endif}}
+    <div class="productsGrid ipsPad">
+        {{foreach $products as $product}}
+            <a href="{$product->url()}">
+                <div class="productImage">
+                    <img src="{file='$product->image' extension='printfulintegration_ProductImage'}" alt="{$product->title}">
+                </div>
+                <div class="productData">
+                    <h3>{$product->_title}</h3>
+                    <div class="productPrice">{$product->priceToDisplay()|raw}</div>
+                    {{$colorCount = \count($product->colors);}}
+                    <i class="ipsType_light">
+                        {lang="printful_productColors" pluralize="$colorCount" sprintf="$colorCount"}
+                    </i>
+                </div>
+            </a>
+        {{endforeach}}
+        {{if \count($products) === 0}}
+            <div class="ipsPad ipsType_large ipsType_light ipsType_center" style="width: 100%;">
+                {lang="printful_store_404"}
+            </div>
+        {{endif}}
+    </div>
+    {{if !empty($pagination)}}
+        <div class="ipsButtonBar ipsPad_half ipsClearfix ipsClear">
+            {$pagination|raw}
+        </div>
+    {{endif}}
+</div>

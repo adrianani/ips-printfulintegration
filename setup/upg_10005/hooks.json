@@ -1,0 +1,11 @@
+{
+    "added": {
+        "0": "F_Core_global",
+        "1": "F_Nexus_Clients",
+        "3": "N_Invoice",
+        "4": "XF_Clients_Invoices",
+        "5": "XF_Clients_Purchases"
+    },
+    "edited": [],
+    "removed": []
+}

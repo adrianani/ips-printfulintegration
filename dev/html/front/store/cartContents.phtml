@@ -1,0 +1,80 @@
+<ips:template parameters="" />
+{{$currency = ( isset( \IPS\Request::i()->cookie['currency'] ) and \in_array( \IPS\Request::i()->cookie['currency'], \IPS\nexus\Money::currencies() ) ) ? \IPS\Request::i()->cookie['currency'] : \IPS\nexus\Customer::loggedIn()->defaultCurrency();}}
+{{if isset( $_SESSION['printful_cart'] ) and \count( $_SESSION['printful_cart'] )}}
+    {{$subtotal = new \IPS\Math\Number('0');}}
+    <div class="ipsDataList">
+        {{foreach $_SESSION['printful_cart'] as $id => $item}}
+            <li class="ipsDataItem printfulCart_item">
+                <div class="ipsDataItem_icon">
+                    <img src='{file="$item->extra['image']" extension="printfulintegration_ProductImage"}' alt="{$item->name}" class="ipsThumb ipsThumb_medium">
+                </div>
+                <div class="ipsDataItem_main">
+                    <a href="{$item->url}" class="ipsType_sectionHead ipsType_blendLinks">
+                        <strong>
+                            {$item->name}
+                        </strong>
+                    </a>
+                    <div class="ipsType_normal ipsType_light">
+                        {{if $item->extra['color']}}
+                            <strong>
+                                {lang="printful_item_color"}:
+                            </strong>
+                            {$item->extra['color']}
+                            &middot;
+                        {{endif}}
+                        {{if $item->extra['size']}}
+                            <strong>
+                                {lang="printful_item_size"}:
+                            </strong>
+                            {$item->extra['size']}
+                        {{endif}}
+                    </div>
+                </div>
+                <div class="ipsDataItem_generic ipsType_large ipsDataItem_size1 ipsType_center">
+                    <form action='{url="app=printfulintegration&module=store&controller=cart&do=quantity&item=$id" csrf="1"}' method="get" data-role="quantityForm">
+                        <select type='number' name="item_{$item->id}">
+                            {{for $i=1; $i <= 50; $i++}}
+                                <option value="{$i}"{{if $item->quantity == $i}} selected{{endif}}>{$i}</option>
+                            {{endfor;}}
+                        </select>
+                    </form>
+                </div>
+                <div class="ipsDataItem_generic ipsType_normal ipsDataItem_size3 ipsType_center">
+                    <a href="{url='app=printfulintegration&module=store&controller=cart&do=quantity&item=$id&quantity=0' csrf='1'}" class="ipsButton ipsButton_small ipsButton_negative" data-confirm data-ipsTooltip _title="{lang='remove_from_cart'}">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </div>
+                <div class="ipsDataItem_generic ipsDataItem_size4 ipsType_large ipsType_right">
+                    <strong style="color: {theme='price'};">
+                        {{$totalPrice=$item->linePrice();}}
+                        {$totalPrice}
+                        {{$subtotal = $subtotal->add($totalPrice->amount);}}
+                    </strong>
+                    {{if $item->quantity > 1}}
+                        <p class='ipsType_reset ipsType_medium ipsType_light'>
+                            {lang="each_short" sprintf="$item->price"}
+                        </p>
+                    {{endif}}
+                </div>
+            </li>
+        {{endforeach}}
+    </div>
+    <hr class='ipsHr' style="border-width: 0 0 2px 0; border-color: #ddd;"/>
+    <div class="ipsPad ipsType_right">
+        <span class="ipsType_sectionHead">
+            <strong>
+                {lang="subtotal"}:
+                <span style="color: {theme='price'};">{money="$subtotal" currency="$currency"}</span>
+            </strong>
+        </span>
+    </div>
+{{else}}
+    <div class="ipsType_light ipsType_large ipsType_center">
+        {lang="printful_empty_cart"}
+        <br />
+        <br />
+        <a href="{url='app=printfulintegration&module=store&controller=store'}" class="ipsButton ipsButton_primary ipsButton_medium">
+            {lang="printful_go_shopping"} 
+        </a>
+    </div>
+{{endif}}

@@ -1,0 +1,45 @@
+<ips:template parameters="$success = FALSE, $quantity = NULL, $productTitle = NULL" />
+
+<div class="ipsPad">
+{{if $success}}
+    <div class="ipsBox ipsPad_half ipsSpacer_bottom">
+        <div class="ipsType_center ipsPad_half">
+            <div class="ipsType_veryLarge ipsType_positive">
+                <i class="fa fa-smile-o"></i>
+            </div>
+            <div class="ipsType_sectionHead ipsType_positive">
+                {lang="printful_added_to_cart"}
+            </div>
+        </div>
+        <hr class="ipsHr ipsHr_small" />
+        <div>
+            <span class="ipsType_large ipsType_bold">
+                {$productTitle}
+            </span>
+            <span class="ipsType_normal ipsPos_right">
+                {lang="quantity"}: {$quantity}
+            </span>
+        </div>
+    </div>
+    <ul class="ipsGrid ipsGrid_collapsePhone">
+        <li class="ipsGrid_span6" style="margin-bottom: 0;">
+            <a href="#" data-action="dialogClose" class="ipsButton ipsButton_fullWidth ipsButton_light ipsButton_medium">{lang="continue_shopping"}</a>
+        </li>
+        <li class="ipsGrid_span6" style="margin-bottom: 0;">
+            <a href="{url='app=printfulintegration&module=store&controller=cart' seoTemplate='merch_cart'}" class="ipsButton ipsButton_fullWidth ipsButton_primary ipsButton_medium">{lang="review_and_checkout"}</a>
+        </li>
+    </ul>
+{{else}}
+    <div class="ipsBox ipsPad_half ipsSpacer_bottom">
+        <div class="ipsType_center ipsPad_half">
+            <div class="ipsType_veryLarge ipsType_negative">
+                <i class="fa fa-frown-o"></i>
+            </div>
+            <div class="ipsType_sectionHead ipsType_negative">
+                {lang="printful_not_available"}
+            </div>
+        </div>
+    </div>
+    <a href="#" data-action="dialogClose" class="ipsButton ipsButton_fullWidth ipsButton_light ipsButton_medium">{lang="continue_shopping"}</a>
+{{endif}}
+</div>

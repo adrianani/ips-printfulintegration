@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language>
+ <app key="printfulintegration" version="10008">
+  <word key="__app_printfulintegration" js="0">Printful Commerce Integration</word>
+  <word key="printful_variants_no" js="0">{# [1:variant][?:variants]}</word>
+  <word key="printful_add_to_store" js="0">Mark for import</word>
+  <word key="menutab__printfulintegration" js="0">Printful integration</word>
+  <word key="menu__printfulintegration_overview" js="0">Overview</word>
+  <word key="menu__printfulintegration_overview_settings" js="0">Settings</word>
+  <word key="printful_api_key" js="0">API Key</word>
+  <word key="menu__printfulintegration_overview_dashboard" js="0">Dashboard</word>
+  <word key="menu__printfulintegration_overview_products" js="0">Products</word>
+  <word key="menutab__printfulintegration_icon" js="0">cart-plus</word>
+  <word key="printful_search" js="0">Filter items by name</word>
+  <word key="printful_search_empty" js="0">The search into your printful store has returned no items :(</word>
+  <word key="printful_no_api_key" js="0"><![CDATA[It looks like you haven't set your API key, please go to the <a href='%s' />Settings</a> page and complete the API Key field with your Printful Key.]]></word>
+  <word key="printful_category_title" js="0">Title</word>
+  <word key="menu__printfulintegration_overview_products_add_child" js="0">Create subcategory</word>
+  <word key="printful_category_parent" js="0">Parent</word>
+  <word key="printful_add_product" js="0">Import Printful Products</word>
+  <word key="printful_import_progress" js="0">%s out of %s</word>
+  <word key="printful_add_to_cart" js="0">Add to cart</word>
+  <word key="printful_item" js="0">Merch item</word>
+  <word key="printful_item_quantity" js="0">Quantity</word>
+  <word key="printful_item_color" js="0">Color</word>
+  <word key="printful_item_size" js="0">Size</word>
+  <word key="printful_productColors" js="0">Available in {!#[0:only one color][?:%s colors]}</word>
+  <word key="printful_cart" js="0">Your merch</word>
+  <word key="printful_added_to_cart" js="0">Item was added to your merch cart</word>
+  <word key="printful_item_removed" js="0">Item was removed from your cart</word>
+  <word key="printful_item_quantity_updated" js="0">Item quantity updated</word>
+  <word key="printful_cleared_cart" js="0">Merch cart is empty now</word>
+  <word key="printful_empty_cart" js="0">You have no merch in the cart right now</word>
+  <word key="printful_go_shopping" js="0">Go to the merch store</word>
+  <word key="shipping_method_option" js="0"><![CDATA[%s - <span class='ipsType_small'>%s</span>]]></word>
+  <word key="choose_shipping_address" js="0">Shipping address</word>
+  <word key="choose_shipping_method" js="0">Shipping method</word>
+  <word key="shipping_method" js="0">Shipping: %s</word>
+  <word key="frontnavigation_printfulintegration" js="0">Merch</word>
+  <word key="frontnavigation_printfulintegration_store" js="0">Store</word>
+  <word key="printful_store_404" js="0">No items found matching your search criteria</word>
+  <word key="printful_dashboard_daily" js="0">{# [1:ORDER][?:ORDERS] today}</word>
+  <word key="printful_dashboard_weekly" js="0">{# [1:ORDER][?:ORDERS] in the past 7 days}</word>
+  <word key="printful_dashboard_monthly" js="0">{# [1:ORDER][?:ORDERS] in the past 30 days}</word>
+  <word key="printful_dashboard_profit" js="0">earnings this month</word>
+  <word key="printful_dashboard_quickstats" js="0">Sales overview</word>
+  <word key="printful_income_overview" js="0">Total Income</word>
+  <word key="printful_check_order" js="0">Open printful order</word>
+  <word key="printful_order_id" js="0">Printful Order</word>
+  <word key="printful_order_total" js="0">Printful Costs</word>
+  <word key="profit" js="0">Earnings</word>
+  <word key="printful_packing_slip_data" js="0">Packing slip data</word>
+  <word key="printful_ps_email" js="0">E-mail address</word>
+  <word key="printful_ps_email_desc" js="0">Customer service email</word>
+  <word key="printful_ps_phone" js="0">Phone number</word>
+  <word key="printful_ps_phone_desc" js="0">Customer service phone. Should be formatted like this: 111-222-3333</word>
+  <word key="printful_ps_message" js="0">Message</word>
+  <word key="printful_ps_message_desc" js="0">Custom packing slip message</word>
+  <word key="printful_process" js="0">Import selected products</word>
+  <word key="bad_request" js="0">Bad request</word>
+  <word key="printful_import_complete" js="0">Products imported</word>
+  <word key="printful_cancel" js="0">Cancel</word>
+  <word key="printful_product_pricing" js="0">Editing pricing: %s</word>
+  <word key="printful_variant_name" js="0">Variant</word>
+  <word key="printful_no_pricing_sync" js="0">Pricing changes here don't affect your Printful's store. (they don't sync)</word>
+  <word key="printful_not_available" js="0">Product not available</word>
+  <word key="printful_pricing" js="0">Edit prices</word>
+  <word key="printful_product_title" js="0">Product title</word>
+  <word key="printful_product_images" js="0">Images</word>
+  <word key="printful_tab_api" js="0">API Settings</word>
+  <word key="printful_tab_store" js="0">Store</word>
+  <word key="printful_methods" js="0">Payment methods</word>
+  <word key="printful_methods_desc" js="0">Customers will only be able to pay for this product and renewals with the payment methods selected.</word>
+  <word key="printful_use_exchange_api" js="0">Use exchange API</word>
+  <word key="printful_use_exchange_api_desc" js="0"><![CDATA[Whether to use or not the <a href='http://exchangeratesapi.io/' target='_blank' rel='nofollow'>exchangeratesapi.io</a>, API called every 12 hours, for price conversion. <div class='ipsType_negative'><i class='fa fa-exclamation-circle'></i> API values will still be used for values that are set to 0 even if this setting is disabled.</div>]]></word>
+  <word key="printful_your_val" js="0">Your value</word>
+  <word key="printful_api_val" js="0">API value</word>
+  <word key="printful_price_exchange" js="0">Price exchange</word>
+  <word key="printful_price_exchange_desc" js="0">If this is enabled products that don't have a price set for the user currency will be converted else they will be displayed as not available</word>
+  <word key="printful_orders" js="0">Orders</word>
+  <word key="printful_add_to_store_undo" js="1">Unmark for import</word>
+  <word key="printful_add_to_store" js="1">Mark for import</word>
+  <word key="printfulSelectedForImport" js="1">With {# [?:selected]}</word>
+ </app>
+</language>

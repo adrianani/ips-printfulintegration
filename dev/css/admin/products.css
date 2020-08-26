@@ -1,0 +1,77 @@
+#printfulStore #printfulSearch {
+  padding-right: 30px;
+}
+
+#printfulStore .printfulSearch {
+  position: relative;
+  float: right;
+}
+
+#printfulStore .printfulSearch > .fa {
+  position: absolute;
+  right: 10px;
+  top: 8px;
+  cursor: pointer;
+}
+
+#printfulStore button[data-action="unmarkForImport"] .fa-plus::before {
+  content: '\f05e';
+}
+
+#printfulStore .ipsBox_titleBar {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+#printfulStore .ipsBox.disabled {
+  opacity: .4;
+}
+
+#printfulStore .productsGrid {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (minmax(300px, 1fr))[auto-fit];
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 15px;
+  width: 100%;
+}
+
+#printfulStore .productsGrid .ipsBox {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#printfulStore .productsGrid .ipsBox > img {
+  width: 300px;
+  height: 300px;
+}
+
+#printfulStore .productsGrid .ipsBox .productInfo {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 12px;
+}
+/*# sourceMappingURL=products.css.map */
