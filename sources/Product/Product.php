@@ -22,15 +22,29 @@ class _Product extends \IPS\Node\Model {
     
     public static $parentNodeClass = 'IPS\printfulintegration\Category';
 
+    public static $databaseColumnEnabledDisabled = 'enabled';
+
     public function url() {
         return \IPS\Http\Url::internal("app=printfulintegration&module=store&controller=product&id={$this->id}", "front", "merch_product", \IPS\Http\Url\Friendly::seoTitle( $this->title ));
     }
 
     public function form( &$form ) {
+
         $form->add( new \IPS\Helpers\Form\Translatable( 'printful_product_title', NULL, FALSE, array( 
-            'app' => 'printfulintegration', 
-            'key' => ( $this->id ? "printful_product_{$this->id}" : NULL 
-        ) ) ) );
+            'key' => ( $this->id ) ? "printful_product_{$this->id}" : NULL 
+        ) ) );
+
+        $form->add( new \IPS\Helpers\Form\YesNo( 'printful_product_enabled', ( isset( $this->enabled ) && $this->enabled !== NULL ) ? $this->enabled : \IPS\Settings::i()->printful_product_enabled_default, FALSE ) );
+
+        $form->add( new \IPS\Helpers\Form\Translatable( 'printful_product_desc', NULL, FALSE, array(
+            'key' => ( $this->id ) ? "printful_product_{$this->id}_desc" : NULL,
+            'editor' => array(
+                'app' => "printfulintegration",
+                'key' => "ProductDesc",
+                'autoSaveKey' => ( $this->id ) ? "printful_product_{$this->id}_desc" : "printful_product_new_desc",
+                'attachIds' => array( ( $this->id ?: 'new' ) )
+            )
+        ) ) );
         
         $form->add( new \IPS\Helpers\Form\Upload( 'printful_product_images', iterator_to_array( new \IPS\File\Iterator( \IPS\Db::i()->select( 'image_location', 'printfulintegration_product_images', array( 'product_id=?', $this->id ), 'image_primary DESC' ), 'printfulintegration_ProductImage' ) ), FALSE, array(
             'multiple' => TRUE,
@@ -43,8 +57,18 @@ class _Product extends \IPS\Node\Model {
     }
 
     public function formatFormValues( $values ) {
-        \IPS\Lang::saveCustom( 'printfulintegration', "printful_product_{$this->id}", $values['printful_product_title'] );
-        unset( $values['printful_product_title'] );
+
+        if( !empty( $values['printful_product_title'] ) ) {
+
+            \IPS\Lang::saveCustom( 'printfulintegration', "printful_product_{$this->id}", $values['printful_product_title'] );
+            unset( $values['printful_product_title'] );
+        }
+
+        if( !empty( $values['printful_product_desc'] ) ) {
+            
+            \IPS\Lang::saveCustom( 'printfulintegration', "printful_product_{$this->id}_desc", $values['printful_product_desc'] );
+            unset( $values['printful_product_desc'] );
+        }
 
         if( isset( $values['printful_product_images'] ) ) {
             \IPS\Db::i()->delete( 'printfulintegration_product_images', array( 'product_id=?', $this->id ) );
@@ -73,6 +97,11 @@ class _Product extends \IPS\Node\Model {
 
         unset( $values['printful_product_images'] );
 
+        foreach( $values as $key => $val ) {
+            $values[ \substr( $key, 17 ) ] = $val;
+            unset( $values[ $key ] );
+        }
+
         return $values;
     }
 
@@ -82,6 +111,14 @@ class _Product extends \IPS\Node\Model {
         }
 
         return $this->title;
+    }
+
+    public function get__desc() {
+        if( \IPS\Member::loggedIn()->language()->checkKeyExists( "printful_product_{$this->id}_desc" ) ) {
+			return \IPS\Member::loggedIn()->language()->addToStack( "printful_product_{$this->id}_desc", NULL );
+        }
+
+        return NULL;
     }
 
     public static function constructFromData( $data, $updateMultitonStoreIfExists = TRUE ) {

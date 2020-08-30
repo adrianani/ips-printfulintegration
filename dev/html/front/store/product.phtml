@@ -1,24 +1,44 @@
 <ips:template parameters="$product, $form" />
 
 <div data-controller="printful.product.page">
-    <div id="productInfo">
-        <div class="ipsColumns">
-            <div class="ipsColumn ipsColumn_veryWide">
-                <div class="productImageCarousel">
-                    {{foreach $product->images as $image}}
-                        <img src="{file='$image' extension='printfulintegration_ProductImage'}" data-ipsLightbox />
-                    {{endforeach}}
+    <div id="productInfo" style="position: relative;">
+        <div class="ipsBox">
+            <div class="cProduct_columns">
+                <div class='ipsAreaBackground_light ipsPad_half'>
+                    <div class="productImageCarousel">
+                        {{foreach $product->images as $i => $image}}
+                            <img src="{file='$image' extension='printfulintegration_ProductImage'}"{{if $i != 0}} class='ipsHide'{{endif}} data-ipsLightbox />
+                        {{endforeach}}
+                    </div>
+                    <hr class="ipsHr ipsSpacer_both ipsSpacer_half" />
+                    <div class="productImageCarousel_nav">
+                        {{foreach $product->images as $i => $image}}
+                            <img src="{file='$image' extension='printfulintegration_ProductImage'}"{{if $i != 0}} class='ipsHide'{{endif}} />
+                        {{endforeach}}
+                    </div>
                 </div>
-            </div>
-            <div class="ipsColumn ipsColumn_fluid">
-                <div class="ipsType_pageTitle ipsType_largeTitle">
-                    {$product->_title}
-                </div>
-                <div class="cPrintful_itemPrice" data-url="{$product->url()}&do=price">
-                    {$product->priceToDisplay()|raw}
-                </div>
-                <div class="ipsAreaBackground ipsPad cPrintful_itemForm">
-                    {$form|raw}
+                <div class="ipsPad_half">
+                    <div class="ipsPad_half ipsPadding_bottom:none">
+                        <div class="ipsType_pageTitle ipsType_largeTitle">
+                            {$product->_title}
+                        </div>
+                        <div class="cPrintful_itemPrice" data-url="{$product->url()}&do=price">
+                            {$product->priceToDisplay()|raw}
+                        </div>
+                        <div class="cPrintful_itemForm">
+                            {$form|raw}
+                        </div>
+                    </div>
+                    {{if $product->_desc}}
+                        <div class="cPrintful_itemDesc">
+                            <h3 class='ipsType_sectionTitle'>
+                                {lang='printful_product_description'}
+                            </h3>
+                            <div class='ipsPad_half ipsPadding_top:none'>
+                                {$product->_desc|raw}
+                            </div>
+                        </div>
+                    {{endif}}
                 </div>
             </div>
         </div>

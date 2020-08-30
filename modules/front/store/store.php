@@ -28,7 +28,7 @@ class _store extends \IPS\Dispatcher\Controller
 		);
 
 		if( !\IPS\Member::loggedIn()->member_id ) {
-			\IPS\Output::i()->error('404_error_title', '2P100/1', 404);
+			\IPS\Output::i()->error('no_module_permission_guest', '2P100/1', 403, 'no_module_permission_guest');
 		}
 		
 		parent::execute();
@@ -42,7 +42,7 @@ class _store extends \IPS\Dispatcher\Controller
 	protected function manage()
 	{
 		$categories = \IPS\printfulintegration\Category::roots();
-		$where = [];
+		$where = 'enabled=1';
 		$page = !empty( \IPS\Request::i()->page ) ? \IPS\Request::i()->page : 1;
 
 		if( $page < 1 ) {
@@ -77,7 +77,7 @@ class _store extends \IPS\Dispatcher\Controller
 					$IDs[] = $parent->id;
 				}
 
-				$where = \IPS\Db::i()->in('parent', $IDs);
+				$where .= ' AND ' . \IPS\Db::i()->in('parent', $IDs);
 
 			} catch( \OutOfRangeException $e ) {
 				\IPS\Output::i()->error( 'page_not_found', '2P100/2', 404, '' );

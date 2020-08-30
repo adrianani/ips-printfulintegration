@@ -39,6 +39,7 @@ class _settings extends \IPS\Dispatcher\Controller
 		$form = new \IPS\Helpers\Form;
 		$form->addTab('printful_tab_api');
 		$form->add( new \IPS\Helpers\Form\Text('printful_api_key', \IPS\Settings::i()->printful_api_key ) );
+		$form->add( new \IPS\Helpers\Form\YesNo( 'printful_product_enabled_default', \IPS\Settings::i()->printful_product_enabled_default, FALSE ) );
 		if( \IPS\printfulintegration\Api::i()->apiKey() ) {
 			$storeCurrency = \IPS\Settings::i()->printful_default_currency;
 			$form->addHeader( 'printful_packing_slip_data' );

@@ -31,7 +31,7 @@ class _orders extends \IPS\Dispatcher\Controller
 		);
 
 		if( !\IPS\Member::loggedIn()->member_id ) {
-			\IPS\Output::i()->error('404_error_title', '2P104/1', 404);
+			\IPS\Output::i()->error('no_module_permission_guest', '2P104/1', 403);
 		}
 		
 		parent::execute();

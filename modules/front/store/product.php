@@ -28,7 +28,7 @@ class _product extends \IPS\Dispatcher\Controller
 		);
 
 		if( !\IPS\Member::loggedIn()->member_id ) {
-			\IPS\Output::i()->error('404_error_title', '2P101/1', 404);
+			\IPS\Output::i()->error('no_module_permission_guest', '2P101/1', 403);
 		}
 		
 		parent::execute();
@@ -82,13 +82,14 @@ class _product extends \IPS\Dispatcher\Controller
 		$form = new \IPS\Helpers\Form("addProductToCart_{$product->id}", 'add_to_cart');
 		$form->class = "ipsForm_vertical";
 
-		$form->add( new \IPS\Helpers\Form\Number( 'printful_item_quantity', 1, TRUE, [ 'min' => 1 ] ) );
 		if( !empty($product->colors) ) {
 			$form->add( new \IPS\Helpers\Form\Select( 'printful_item_color', 0, TRUE, [ 'options' => $product->colors ] ) );
 		}
 		if( !empty($product->sizes) ) {
 			$form->add( new \IPS\Helpers\Form\Select( 'printful_item_size', 0, TRUE, [ 'options' => $product->sizes ] ) );
 		}
+
+		$form->add( new \IPS\Helpers\Form\Number( 'printful_item_quantity', 1, TRUE, [ 'min' => 1 ] ) );
 
 		if( $values = $form->values() ) {
 			$color = !empty($product->colors) ? $product->colors[ $values['printful_item_color'] ] : NULL;

@@ -24,6 +24,10 @@
         "default": "1"
     },
     {
+        "key": "printful_product_enabled_default",
+        "default": "1"
+    },
+    {
         "key": "printful_ps_email",
         "default": ""
     },

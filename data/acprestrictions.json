@@ -8,6 +8,9 @@
         },
         "products": {
             "products_manage": "products_manage"
+        },
+        "emails": {
+            "emails_manage": "emails_manage"
         }
     }
 }

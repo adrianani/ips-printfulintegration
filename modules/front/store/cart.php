@@ -24,8 +24,13 @@ class _cart extends \IPS\Dispatcher\Controller
 	{
 
 		if( !\IPS\Member::loggedIn()->member_id ) {
-			\IPS\Output::i()->error('404_error_title', '2P103/1', 404);
+			\IPS\Output::i()->error('no_module_permission_guest', '2P103/1', 403);
 		}
+
+		\IPS\Output::i()->breadcrumb['module'] =  array(
+			\IPS\Http\Url::internal('app=printfulintegration&module=store&controller=store', 'front', 'merch_store'),
+			\IPS\Member::loggedIn()->language()->addToStack('frontnavigation_printfulintegration')
+		);
 		
 		parent::execute();
 	}
@@ -39,18 +44,9 @@ class _cart extends \IPS\Dispatcher\Controller
 	{
 		\IPS\Output::i()->title = \IPS\Member::loggedIn()->language()->addToStack('printful_cart');
 		\IPS\Output::i()->sidebar['enabled'] = FALSE;
-		\IPS\Output::i()->breadcrumb = array_merge(
-			\IPS\Output::i()->breadcrumb,
-			array(
-				'module' =>  array(
-					\IPS\Http\Url::internal('app=printfulintegration&module=store&controller=store', 'front', 'merch_store'),
-					\IPS\Member::loggedIn()->language()->addToStack('frontnavigation_printfulintegration')
-				),
-				array(
-					\IPS\Http\Url::internal('app=printfulintegration&module=store&controller=cart', 'front', 'merch_cart'),
-					\IPS\Member::loggedIn()->language()->addToStack('printful_cart')
-				)
-			)
+		\IPS\Output::i()->breadcrumb[] = array(
+			\IPS\Http\Url::internal('app=printfulintegration&module=store&controller=cart', 'front', 'merch_cart'),
+			\IPS\Member::loggedIn()->language()->addToStack('printful_cart')
 		);
 		\IPS\Output::i()->jsFiles = array_merge( \IPS\Output::i()->jsFiles, \IPS\Output::i()->js( 'front_cart.js', 'printfulintegration', 'front' ) );
 		\IPS\Output::i()->output .= \IPS\Theme::i()->getTemplate('store')->cart();

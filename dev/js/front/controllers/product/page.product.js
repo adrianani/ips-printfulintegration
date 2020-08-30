@@ -6,17 +6,39 @@
 
         initialize: function() {
             $('.productImageCarousel').slick({
-                dots: true,
                 infinite: true,
                 slidesToShow: 1,
-                nextArrow: '<button type="button" class="slick-prev"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>',
-                prevArrow: '<button type="button" class="slick-next"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>',
+                arrows: false,
+                fade: true,
+                asNavFor: '.productImageCarousel_nav',
+            });
+
+            $('.productImageCarousel_nav').slick({
+                infinite: true,
+                slidesToShow: 3,
+                slidesToScroll: 1,
+                centerMode: true,
+                arrows: false,
+                asNavFor: '.productImageCarousel',
+                centerPadding: '50px',
+                focusOnSelect: true,
+                variableWidth: true,
+                responsive: [
+                    {
+                        breakpoint: 470,
+                        settings: {
+                            slidesToShow: 2,
+                        }
+                    }
+                ]
             });
 
             this._prices = this.scope.find('.cPrintful_itemPrice').data('pricing');
 
             this.on('change', 'select[name="printful_item_size"]', this.changePrice);
             this.on('submit', '.ipsForm', this.addToCart);
+
+            $('.slick-slide.ipsHide').removeClass('ipsHide');
         },
 
         changePrice: function(e) {

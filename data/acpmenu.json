@@ -17,6 +17,13 @@
             "controller": "settings",
             "do": "",
             "restriction": "settings_manage"
+        },
+        "emails": {
+            "tab": "printfulintegration",
+            "controller": "emails",
+            "do": "",
+            "restriction": "emails_manage",
+            "subcontrollers": ""
         }
     }
 }

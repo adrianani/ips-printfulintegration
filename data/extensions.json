@@ -1,5 +1,9 @@
 {
     "core": {
+        "EditorLocations": {
+            "EmailContent": "IPS\\printfulintegration\\extensions\\core\\EditorLocations\\EmailContent",
+            "ProductDesc": "IPS\\printfulintegration\\extensions\\core\\EditorLocations\\ProductDesc"
+        },
         "FileStorage": {
             "ProductImage": "IPS\\printfulintegration\\extensions\\core\\FileStorage\\ProductImage"
         },

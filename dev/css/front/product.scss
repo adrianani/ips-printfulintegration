@@ -1,25 +1,32 @@
-#addToCart {
-    display: flex;
-
-    input {
-        width: 90px;
-        border-radius: 5px 0 0 5px;
-    }
-
-    button {
-        border-radius: 0 5px 5px 0;
-    }
-}
-
 .productImageCarousel {
-    width: 340px;
+    --image-size: 420px;
+
+    width: var(--image-size);
     position: relative;
 
+    img {
+        width: var(--image-size);
+        height: var(--image-size);
+        border-radius: 5px;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
     .slick-list {
-        border: 1px solid #e0e0e0;
-        box-shadow: 0px 1px 0px rgba(0,0,0,0.1);
-        border-radius: 3px;
         overflow: hidden;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    .slick-track {
+
+        &:focus {
+            outline: none;
+        }
     }
 
     .slick-arrow {
@@ -94,22 +101,12 @@
             }
         }
     }
-
-    .slick-track {
-
-        img {
-
-            width: 340px;
-            height: 340px;
-        }
-    }
 }
 
 .cPrintful_itemPrice {
     font-size: 24px;
     font-weight: bold;
     padding: 10px 0;
-    margin-bottom: 20px;
     color: #c02222;
 }
 
@@ -121,5 +118,144 @@
 
     select {
         width: 160px;
+    }
+}
+
+.cPrintful_itemForm .ipsForm ul {
+    display: flex;
+    align-items: center;
+}
+
+.cPrintful_itemForm .ipsForm ul > li.ipsFieldRow:first-child {
+    margin-right: 15px;
+}
+
+.cPrintful_itemForm .ipsForm ul > li.ipsFieldRow:nth-last-child(2) {
+    position: absolute;
+    right: 24px;
+    top: 26px;
+}
+
+.cPrintful_itemForm .ipsForm ul > li.ipsFieldRow:last-child {
+    position: absolute;
+    right: 24px;
+    top: 126px;
+}
+
+.cPrintful_itemForm .ipsForm .ipsFieldRow_required {
+    display: none;
+}
+
+.cProduct_columns {
+    display: flex;
+
+    & > .ipsPad_half:first-child {
+        border-radius: 5px 0 0 5px;
+    }
+
+    & > .ipsPad_half:last-child {
+        flex: 1;
+
+        .ipsType_pageTitle {
+            max-width: calc(100% - 200px);
+        }
+    }
+}
+
+.productImageCarousel_nav {
+
+    --image-size: 60px;
+    width: 420px;
+
+    *:focus {
+        outline: none;
+    }
+
+    img {
+        height: var(--image-size);
+        width: var(--image-size);
+        margin: 0 10px;
+        border: 1px solid rgba(black, .1);
+        border-radius: 5px;
+    }
+
+    .slick-list {
+        overflow: hidden;
+    }
+}
+
+@media screen and (max-width: 979px) {
+
+        .cProduct_columns {
+            flex-direction: column;
+
+            & > .ipsPad_half:first-child {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                border-radius: 5px 5px 0 0;
+            }
+        }
+
+        .cPrintful_itemForm .ipsForm ul > li.ipsFieldRow:nth-last-child(2) {
+            top: 452px;
+        }
+        
+        .cPrintful_itemForm .ipsForm ul > li.ipsFieldRow:last-child {
+            top: 552px;
+        }
+
+        .productImageCarousel {
+            --image-size: 300px;
+        }
+
+        .productImageCarousel_nav {
+            width: 300px;
+
+            .slick-list {
+                width: 300px;
+                margin: 0 auto;
+            }
+        }
+}
+
+@media screen and (max-width: 767px) {
+
+    .cProduct_columns > .ipsPad_half:last-child .ipsType_pageTitle {
+        max-width: 100%;
+    }
+
+    .cProduct_columns .ipsForm {
+        padding-bottom: 43px;
+    }
+
+    .cPrintful_itemForm .ipsForm ul > li.ipsFieldRow:nth-last-child(2) {
+        top: unset;
+        bottom: 24px;
+        left: 24px;
+        margin-bottom: 0;
+    }
+    
+    .cPrintful_itemForm .ipsForm ul > li.ipsFieldRow:last-child {
+        top: unset;
+        bottom: 24px;
+    }
+}
+
+@media screen and (max-width: 420px) {
+
+    .cPrintful_itemForm .ipsForm ul {
+        flex-direction: column;
+        align-items: flex-start;
+
+        li[id*="printful_item_color"],
+        li[id*="printful_item_size"] {
+            width: 100%;
+            margin-right: 0;
+        }
+    }
+
+    .ipsApp .cPrintful_itemForm select {
+        width: 100%;
     }
 }
