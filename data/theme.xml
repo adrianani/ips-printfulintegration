@@ -130,9 +130,23 @@
             <li class="ipsPos_left">
                 <a class="ipsButton ipsButton_medium ipsButton_link ipsButton_narrow" href="{url='app=printfulintegration&module=store&controller=cart&do=clear' csrf='1' seoTemplate='merch_cart'}" data-confirm><i class="fa fa-times"></i> {lang="empty_cart"}</a>
             </li>
-            <li class="ipsToolList_primaryAction">
-                <a id="cartCheckout" class="ipsButton ipsButton_large ipsButton_important ipsButton_fullWidth" data-ipsDialog data-ipsDialog-title="{lang='choose_shipping_address'}" href="{url='app=printfulintegration&module=store&controller=cart&do=checkout' csrf='1' seoTemplate='merch_cart'}"><i class="fa fa-money"></i>&nbsp; Checkout</a>
-            </li>
+            {{if \IPS\Member::loggedIn()->member_id}}
+                <li class="ipsToolList_primaryAction">
+                    <a id="cartCheckout" class="ipsButton ipsButton_large ipsButton_important ipsButton_fullWidth" data-ipsDialog data-ipsDialog-title="{lang='choose_shipping_address'}" data-ipsDialog-forceReload="true" href="{url='app=printfulintegration&module=store&controller=cart&do=checkout' csrf='1' seoTemplate='merch_cart'}"><i class="fa fa-money"></i>&nbsp; Checkout</a>
+                </li>
+            {{else}}
+                {{$base64ref = @base64_encode( \IPS\Http\Url::internal( 'app=printfulintegration&module=store&controller=cart', NULL, 'merch_cart' ) );}}
+                <li>
+                    <a href='{url="app=core&module=system&controller=register&ref=$base64ref" seoTemplate="register"}' class="ipsButton ipsButton_large ipsButton_primary">
+                        {lang="printful_checkout_register"}
+                    </a>
+                </li>
+                <li class="ipsToolList_primaryAction">
+                    <a href='{url="app=core&module=system&controller=login&ref=$base64ref" seoTemplate="login"}' class="ipsButton ipsButton_large ipsButton_veryLight">
+                        <strong> {lang="printful_checkout_login"} </strong>
+                    </a>
+                </li>
+            {{endif}}
         </ul>
     </div>
 </div>]]></template>
@@ -148,7 +162,12 @@
                 <div class="ipsDataItem_main">
                     <a href="{$item->url}" class="ipsType_sectionHead ipsType_blendLinks">
                         <strong>
-                            {$item->name}
+                            {{try { $product = \IPS\printfulintegration\Product::load( $item->id ); } catch( \Exception $e ) { $product = NULL; } }}
+                            {{if $product !== NULL}}
+                                {$product->_title}
+                            {{else}}
+                                {$item->name}
+                            {{endif}}
                         </strong>
                     </a>
                     <div class="ipsType_normal ipsType_light">
@@ -281,7 +300,16 @@
                                 <img src='{file="$item->extra['image']" extension="printfulintegration_ProductImage"}' alt="{$item->name}" class="ipsThumb ipsThumb_small">
                             </div>
                             <div class="ipsDataItem_main">
-                                <strong><a href="{$item->url}" class="ipsType_large ipsType_blendLinks">{$item->name}</a></strong>
+                                <strong>
+                                    <a href="{$item->url}" class="ipsType_large ipsType_blendLinks">
+                                        {{try { $product = \IPS\printfulintegration\Product::load( $item->id ); } catch( \Exception $e ) { $product = NULL; } }}
+                                        {{if $product !== NULL}}
+                                            {$product->_title}
+                                        {{else}}
+                                            {$item->name}
+                                        {{endif}}
+                                    </a>
+                                </strong>
                                 <div class="ipsType_medium ipsType_light">
                                     {{if $item->extra['color']}}
                                         <strong>
@@ -367,7 +395,7 @@
             <a href='{$item->url()}' class="ipsSideMenu_item{{if \IPS\Request::i()->category == $item->id}} ipsSideMenu_itemActive{{endif}}">
                 {$item->_title}
                 <div class="ipsSideMenu_itemCount">
-                    {expression="\IPS\printfulintegration\Product::countWhere('view', NULL, ['parent=?', $item->id])"}
+                    {expression="\IPS\Db::i()->select('COUNT(*)', 'printfulintegration_products', ['parent=? AND enabled=1', $item->id])->first()"}
                 </div>
             </a>
             {{if $children = $item->children('view', NULL, FALSE, 0)}}
@@ -376,26 +404,50 @@
         </li>
     {{endforeach}}
 </ul>]]></template>
+ <template template_group="store" template_name="newProducts" template_data="$products" template_location="front" template_app="printfulintegration"><![CDATA[
+<div class="ipsPad">
+    {$products|raw}
+</div>]]></template>
  <template template_group="store" template_name="product" template_data="$product, $form" template_location="front" template_app="printfulintegration"><![CDATA[
 <div data-controller="printful.product.page">
-    <div id="productInfo">
-        <div class="ipsColumns">
-            <div class="ipsColumn ipsColumn_veryWide">
-                <div class="productImageCarousel">
-                    {{foreach $product->images as $image}}
-                        <img src="{file='$image' extension='printfulintegration_ProductImage'}" data-ipsLightbox />
-                    {{endforeach}}
+    <div id="productInfo" style="position: relative;">
+        <div class="ipsBox">
+            <div class="cProduct_columns">
+                <div class='ipsAreaBackground_light ipsPad_half'>
+                    <div class="productImageCarousel">
+                        {{foreach $product->images as $i => $image}}
+                            <img src="{file='$image' extension='printfulintegration_ProductImage'}"{{if $i != 0}} class='ipsHide'{{endif}} data-ipsLightbox />
+                        {{endforeach}}
+                    </div>
+                    <hr class="ipsHr ipsSpacer_both ipsSpacer_half" />
+                    <div class="productImageCarousel_nav">
+                        {{foreach $product->images as $i => $image}}
+                            <img src="{file='$image' extension='printfulintegration_ProductImage'}"{{if $i != 0}} class='ipsHide'{{endif}} />
+                        {{endforeach}}
+                    </div>
                 </div>
-            </div>
-            <div class="ipsColumn ipsColumn_fluid">
-                <div class="ipsType_pageTitle ipsType_largeTitle">
-                    {$product->_title}
-                </div>
-                <div class="cPrintful_itemPrice" data-url="{$product->url()}&do=price">
-                    {$product->priceToDisplay()|raw}
-                </div>
-                <div class="ipsAreaBackground ipsPad cPrintful_itemForm">
-                    {$form|raw}
+                <div class="ipsPad_half">
+                    <div class="ipsPad_half ipsPadding_bottom:none">
+                        <div class="ipsType_pageTitle ipsType_largeTitle">
+                            {$product->_title}
+                        </div>
+                        <div class="cPrintful_itemPrice" data-url="{$product->url()}&do=price">
+                            {$product->priceToDisplay()|raw}
+                        </div>
+                        <div class="cPrintful_itemForm">
+                            {$form|raw}
+                        </div>
+                    </div>
+                    {{if $product->_desc}}
+                        <div class="cPrintful_itemDesc">
+                            <h3 class='ipsType_sectionTitle'>
+                                {lang='printful_product_description'}
+                            </h3>
+                            <div class='ipsPad_half ipsPadding_top:none'>
+                                {$product->_desc|raw}
+                            </div>
+                        </div>
+                    {{endif}}
                 </div>
             </div>
         </div>
@@ -485,32 +537,32 @@
   color: #d14141;
 }
 /*# sourceMappingURL=dashboard.css.map */</css>
- <css css_location="front" css_app="printfulintegration" css_attributes="" css_path="." css_name="product.css">#addToCart {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-}
-
-#addToCart input {
-  width: 90px;
-  border-radius: 5px 0 0 5px;
-}
-
-#addToCart button {
-  border-radius: 0 5px 5px 0;
-}
-
-.productImageCarousel {
-  width: 340px;
+ <css css_location="front" css_app="printfulintegration" css_attributes="" css_path="." css_name="product.css"><![CDATA[.productImageCarousel {
+  --image-size: 420px;
+  width: var(--image-size);
   position: relative;
 }
 
+.productImageCarousel img {
+  width: var(--image-size);
+  height: var(--image-size);
+  border-radius: 5px;
+}
+
+.productImageCarousel img:focus {
+  outline: none;
+}
+
 .productImageCarousel .slick-list {
-  border: 1px solid #e0e0e0;
-  -webkit-box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.1);
-          box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.1);
-  border-radius: 3px;
   overflow: hidden;
+}
+
+.productImageCarousel .slick-list:focus {
+  outline: none;
+}
+
+.productImageCarousel .slick-track:focus {
+  outline: none;
 }
 
 .productImageCarousel .slick-arrow {
@@ -597,27 +649,175 @@
   background-color: #aaa;
 }
 
-.productImageCarousel .slick-track img {
-  width: 340px;
-  height: 340px;
-}
-
 .cPrintful_itemPrice {
   font-size: 24px;
   font-weight: bold;
   padding: 10px 0;
-  margin-bottom: 20px;
   color: #c02222;
 }
 
-.ipsApp .cPrintful_itemForm input[type=&quot;number&quot;] {
+.ipsApp .cPrintful_itemForm input[type="number"] {
   width: 60px;
 }
 
 .ipsApp .cPrintful_itemForm select {
   width: 160px;
 }
-/*# sourceMappingURL=product.css.map */</css>
+
+.cPrintful_itemForm .ipsForm ul {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.cPrintful_itemForm .ipsForm ul > li.ipsFieldRow:first-child {
+  margin-right: 15px;
+}
+
+.cPrintful_itemForm .ipsForm ul > li.ipsFieldRow:nth-last-child(2) {
+  position: absolute;
+  right: 24px;
+  top: 26px;
+}
+
+.cPrintful_itemForm .ipsForm ul > li.ipsFieldRow:last-child {
+  position: absolute;
+  right: 24px;
+  top: 126px;
+}
+
+.cPrintful_itemForm .ipsForm .ipsFieldRow_required {
+  display: none;
+}
+
+.cProduct_columns {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.cProduct_columns > .ipsPad_half:first-child {
+  border-radius: 5px 0 0 5px;
+}
+
+.cProduct_columns > .ipsPad_half:last-child {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.cProduct_columns > .ipsPad_half:last-child .ipsType_pageTitle {
+  max-width: calc(100% - 200px);
+}
+
+.productImageCarousel_nav {
+  --image-size: 60px;
+  width: 420px;
+}
+
+.productImageCarousel_nav *:focus {
+  outline: none;
+}
+
+.productImageCarousel_nav img {
+  height: var(--image-size);
+  width: var(--image-size);
+  margin: 0 10px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+
+.productImageCarousel_nav img.slick-active {
+  border: 1px solid #177ec9;
+  -webkit-box-shadow: rgba(52, 128, 187, 0.3) 0px 0px 0px 4px;
+          box-shadow: rgba(52, 128, 187, 0.3) 0px 0px 0px 4px;
+}
+
+.productImageCarousel_nav .slick-list {
+  overflow: hidden;
+  padding: 10px;
+}
+
+@media screen and (max-width: 979px) {
+  .cProduct_columns {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+  .cProduct_columns > .ipsPad_half:first-child {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    border-radius: 5px 5px 0 0;
+  }
+  .cPrintful_itemForm .ipsForm ul > li.ipsFieldRow:nth-last-child(2) {
+    top: 452px;
+  }
+  .cPrintful_itemForm .ipsForm ul > li.ipsFieldRow:last-child {
+    top: 552px;
+  }
+  .productImageCarousel {
+    --image-size: 300px;
+  }
+  .productImageCarousel_nav {
+    width: 300px;
+  }
+  .productImageCarousel_nav .slick-list {
+    width: 300px;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .cProduct_columns > .ipsPad_half:last-child .ipsType_pageTitle {
+    max-width: 100%;
+  }
+  .cProduct_columns .ipsForm {
+    padding-bottom: 43px;
+  }
+  .cPrintful_itemForm .ipsForm ul > li.ipsFieldRow:nth-last-child(2) {
+    top: unset;
+    bottom: 24px;
+    left: 24px;
+    margin-bottom: 0;
+  }
+  .cPrintful_itemForm .ipsForm ul > li.ipsFieldRow:last-child {
+    top: unset;
+    bottom: 24px;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .cPrintful_itemForm .ipsForm ul {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: start;
+        -ms-flex-align: start;
+            align-items: flex-start;
+  }
+  .cPrintful_itemForm .ipsForm ul li[id*="printful_item_color"],
+  .cPrintful_itemForm .ipsForm ul li[id*="printful_item_size"] {
+    width: 100%;
+    margin-right: 0;
+  }
+  .ipsApp .cPrintful_itemForm select {
+    width: 100%;
+  }
+}
+/*# sourceMappingURL=product.css.map */]]></css>
  <css css_location="admin" css_app="printfulintegration" css_attributes="" css_path="." css_name="products.css"><![CDATA[#printfulStore #printfulSearch {
   padding-right: 30px;
 }

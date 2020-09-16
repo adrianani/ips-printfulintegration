@@ -26,9 +26,15 @@ class _product extends \IPS\Dispatcher\Controller
 			\IPS\Http\Url::internal( "app=printfulintegration&module=store&controller=store", 'front', 'merch_store' ),
 			\IPS\Member::loggedIn()->language()->addToStack('frontnavigation_printfulintegration')
 		);
+		
+		try {
+			$product = \IPS\printfulintegration\Product::load( \IPS\Request::i()->id );
 
-		if( !\IPS\Member::loggedIn()->member_id ) {
-			\IPS\Output::i()->error('no_module_permission_guest', '2P101/1', 403);
+			if( !$product->enabled ) {
+				\IPS\Output::i()->error( 'node_error', '2P101/4', 404, '' );
+			}
+		} catch ( \OutOfRangeException $e ) {
+			\IPS\Output::i()->error( 'node_error', '2P101/3', 404, '' );
 		}
 		
 		parent::execute();
@@ -46,7 +52,7 @@ class _product extends \IPS\Dispatcher\Controller
 				$_SESSION['printful_cart'] = array();
 			}
 
-			$product = \IPS\printfulintegration\Product::constructFromData( \IPS\Db::i()->select('*', 'printfulintegration_products', ['id=?', \IPS\Request::i()->id])->first() );
+			$product = \IPS\printfulintegration\Product::load( \IPS\Request::i()->id );
 			$form = $this->_productForm( $product );
 
 			foreach( $product->parents() as $parent ) {
@@ -72,7 +78,7 @@ class _product extends \IPS\Dispatcher\Controller
 				$bcItems
 			);
 			\IPS\Output::i()->output = \IPS\Theme::i()->getTemplate('store')->product( $product, $form );
-		} catch ( \UnderflowException $e ) {
+		} catch ( \OutOfRangeException $e ) {
 			\IPS\Output::i()->error( 'node_error', '2P101/2', 404, '' );
 		}
 	}
@@ -108,15 +114,22 @@ class _product extends \IPS\Dispatcher\Controller
 				return;
 			}
 
-			$item = new \IPS\printfulintegration\extensions\nexus\Item\PrintfulProduct( $product->_title, $price );
+			$item = new \IPS\printfulintegration\extensions\nexus\Item\PrintfulProduct( $product->getTitle(), $price );
 			$item->id = $product->id;
 			$item->quantity = $values['printful_item_quantity'];
+			
+			$image = \IPS\File::get('printfulintegration_ProductImage', \IPS\Db::i()->select('image_location', 'printfulintegration_product_images', ['product_id=? AND image_primary=?', $product->id, 1])->first());
+
+			try {
+				$image = \IPS\File::get('printfulintegration_ProductImage', \IPS\Db::i()->select('image_location', 'printfulintegration_product_images', ['product_id=? AND variant_color=?', $product->id, $color])->first());
+			} catch( \UnderflowException $e ) {}
+
 			$item->extra = [
 				'printful_id' => $product->printful_id,
 				'variant_id' => \IPS\Db::i()->select('printful_id', 'printfulintegration_variants', ['product_id=? AND size=? AND color=?', $product->id, $size, $color])->first(),
 				'color' => $color,
 				'size' => $size,
-				'image' => \IPS\File::get('printfulintegration_ProductImage', \IPS\Db::i()->select('image_location', 'printfulintegration_product_images', ['product_id=? AND variant_color=?', $product->id, $color])->first()),
+				'image' => $image,
 				'shipping' => FALSE,
 			];
 			$item->url = $product->url();

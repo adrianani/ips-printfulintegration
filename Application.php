@@ -55,7 +55,7 @@ class _Application extends \IPS\Application
 	}
 
 	public static function stmtToStats( $stmt ) {
-		$conversionRates = \IPS\printfulintegration\Application::conversionRates();
+		$conversionRates = \IPS\printfulintegration\Application::conversionRates(TRUE);
 		$total = new \IPS\Math\Number('0');
 		$orders = 0;
 		$paid = 0;

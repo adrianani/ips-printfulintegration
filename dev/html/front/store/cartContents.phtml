@@ -11,7 +11,12 @@
                 <div class="ipsDataItem_main">
                     <a href="{$item->url}" class="ipsType_sectionHead ipsType_blendLinks">
                         <strong>
-                            {$item->name}
+                            {{try { $product = \IPS\printfulintegration\Product::load( $item->id ); } catch( \Exception $e ) { $product = NULL; } }}
+                            {{if $product !== NULL}}
+                                {$product->_title}
+                            {{else}}
+                                {$item->name}
+                            {{endif}}
                         </strong>
                     </a>
                     <div class="ipsType_normal ipsType_light">

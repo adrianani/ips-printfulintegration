@@ -86,13 +86,6 @@ class _products extends \IPS\Node\Controller
                         // get images for the product
                         $url = end($printfulVariant['files'])['preview_url'];
 
-                        // variant characteristics ( color, size )
-                        if( \strpos( $printfulVariant['sku'], '_' ) !== FALSE ) {
-                            $properties = \explode('-', \explode('_', $printfulVariant['sku'])[1] );
-                        } else {
-                            $properties = array();
-                        }
-
                         if($i === 0) {
                             $product->base_price = $printfulVariant['retail_price'];
                         }
@@ -111,13 +104,30 @@ class _products extends \IPS\Node\Controller
                         ];
 
                         $variant->price = json_encode($price);
+                        
+                        // variant characteristics ( color, size )
+                        $variant->color = NULL;
+                        $variant->size = NULL;
+                       
+                        if( \strpos( $printfulVariant['sku'], '_' ) !== FALSE ) {
+                            $properties = \explode('_', $printfulVariant['sku'])[1];
 
-                        if( \count( $properties ) === 2 ) {
-                            $variant->color = $properties[0];
-                            $variant->size = $properties[1];
-                        } else {
-                            $variant->size = !empty($properties[0]) ? $properties[0] : NULL;
-                        }
+                            if( \strpos( $properties, '-' ) ) {
+
+                                $properties = \explode( '-', $properties );
+                                $lastItem = \count( $properties ) - 1;
+
+                                if( \strpos( $properties[ $lastItem ], '×' ) || \strpos( $properties[ $lastItem ], 'x' ) || \in_array( $properties[ $lastItem ], array( 'XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL' ) ) ) {
+                                    $variant->size = $properties[ $lastItem ];
+                                    unset( $properties[ $lastItem ] );
+                                    $variant->color = implode( '-', $properties );
+                                }
+
+                            } else if( \strpos( $properties, '×' ) || \strpos( $properties, 'x' ) || \in_array( $properties, array( 'XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL' ) ) ) {
+
+                                $variant->size = $properties;
+                            }
+                        } 
 
                         $variant->save();
 
@@ -135,7 +145,7 @@ class _products extends \IPS\Node\Controller
 
                             \IPS\Db::i()->insert('printfulintegration_product_images', array(
                                 'product_id' => $product->id,
-                                'variant_color' => ( \count( $properties ) > 1 ) ? $properties[0] : NULL,
+                                'variant_color' => $variant->color,
                                 'image_location' => $file,
                                 'image_primary' => $primary
                             ));

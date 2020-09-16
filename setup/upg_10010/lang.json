@@ -1,0 +1,24 @@
+{
+    "normal": {
+        "added": [
+            "pe_type_email",
+            "pe_type_pm",
+            "pe_send_type",
+            "pe_sender_member",
+            "pe_sender_member_desc",
+            "pe_sender_email",
+            "pe_sender_email_desc",
+            "mailsub__printfulintegration_thanksEmail"
+        ],
+        "edited": [
+            "menu__printfulintegration_overview_emails",
+            "printful_email_campaign"
+        ],
+        "removed": []
+    },
+    "js": {
+        "added": [],
+        "edited": [],
+        "removed": []
+    }
+}

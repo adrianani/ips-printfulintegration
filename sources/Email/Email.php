@@ -14,7 +14,7 @@ class _Email extends \IPS\Node\Model {
 
     public static $nodeTitle = "printful_email_campaign";
 
-    public static $databaseTable = "printfulintegration_emails";
+    public static $databaseTable = "printfulintegration_email";
 
     public static $databasePrefix = "pe_";
 
@@ -92,17 +92,15 @@ class _Email extends \IPS\Node\Model {
         return $return;
     }
 
-    public static function emailData( $id, $memberObj, $orderId = NULL ) {
+    public function emailData( $memberObj, $invoice = NULL ) {
 
         try {
-
-            $emailTemplate = static::load( $id );
 
             $merch = array(
                 'url' => \IPS\Http\Url::internal( "app=printfulintegration&module=store&controller=store", "front", "merch_store" )
             );
 
-            if( $emailTemplate->type === 'intv' ) {
+            if( $this->type === 'intv' ) {
                 $merch['new_products'] = \IPS\Theme::i()->getTemplate('store', 'printfulintegration', 'front');
             }
             
@@ -119,16 +117,18 @@ class _Email extends \IPS\Node\Model {
                 'name' => \IPS\Settings::i()->board_name,
                 'members' => \IPS\Db::i()->select( 'COUNT(*)', 'core_members', array( 'completed=?', true ) )->first(),
                 'most_active' => $mostOnline['count'],
-                'most_active_date' => $mostOnline['time'],
+                'most_active_date' => \IPS\DateTime::ts( $mostOnline['time'] ),
                 'posts' => \IPS\Db::i()->select('SUM(`member_posts`)', 'core_members')->first(),
             );
 
             $member = array(
                 'url' => $memberObj->url(),
+                'last_visit' => \IPS\DateTime::ts( $memberObj->last_visit ),
 
             );
 
-            foreach( array( 'name', 'joined', 'last_visit' ) as $key ) {
+            foreach( array( 'name', 'joined' ) as $key ) {
+
                 $member[ $key ] = $memberObj->{$key};
             }
 
@@ -137,7 +137,7 @@ class _Email extends \IPS\Node\Model {
                 $member[ $key ] = $memberObj->{$objKey};
             }
 
-            if( $emailTemplate->type = 'ordr' ) {
+            if( $this->type = 'ordr' ) {
             
                 $expenses = "";
 
@@ -148,20 +148,17 @@ class _Email extends \IPS\Node\Model {
                 $member['total_expenses'] = \substr($expenses, 0, -2);
             }
 
-            $orderData = \IPS\Db::i()->select('*', 'printfulintegration_invoices', ["id=?", $orderId])->first();
-            $invoice = \IPS\nexus\Invoice::load( $orderData['invoice_id'] );
-
             $order = array(
-                'id' => $orderId,
+                'id' => \IPS\Db::i()->select('id', 'printfulintegration_invoices', ['invoice_id=?', $invoice->id])->first(),
                 'url' => $invoice->url(),
                 'total' => $invoice->total
             );
             
             return array(
-                'title' => $emailTemplate->title,
+                'title' => $this->title,
                 'content' => \preg_replace_callback( "/\{(?<object>suite|merch|member|order)\.(?<key>[a-z_]*)\}/i", function($matches) use ( $member, $suite, $order, $merch ) {
                     return ${$matches['object']}[ $matches['key'] ];
-                }, $emailTemplate->content )
+                }, $this->content )
             );
 
         } catch ( \Exception $e ) {
@@ -176,30 +173,26 @@ class _Email extends \IPS\Node\Model {
     }
 
     public function form( &$form ) {
-        $form->addMessage('pe_opted_out', 'ipsMessage ipsMessage_info ipsSpacer_bottom ipsSpacer_bottom');
-
-        $types = array(
-            'ordr' => 'pe_order',
-            'intv' => 'pe_interval',
-        );
 
         $form->add( new \IPS\Helpers\Form\Text('pe_title', $this->title, TRUE, array(
             'maxLength' => 255
         ) ) );
-        $form->add( new \IPS\Helpers\Form\Radio('pe_type', $this->type, TRUE, array(
-            'options' => $types,
-            'toggles' => array(
-                'ordr' => array(
-                    'pe_order_content',
-                    'pe_order_categories'
+        $form->add( new \IPS\Helpers\Form\Radio( 'pe_send_type', $this->send_type, TRUE, array(
+            'options' => array(
+                'pe_type_email',
+                'pe_type_pm'
+            ),
+            'toggles' =>  array(
+                0 => array(
+                    'pe_sender_email'
                 ),
-                'intv' => array(
-                    'pe_interval_content',
-                    'pe_interval_categories',
-                    'pe_interval'
+                1 => array(
+                    'pe_sender_member'
                 )
             )
         ) ) );
+        $form->add( new \IPS\Helpers\Form\Member( 'pe_sender_member', ( $this->send_type == 1 && $this->sender ) ? \IPS\Member::load( $this->sender ) : NULL, TRUE, array(), NULL, NULL, NULL, 'pe_sender_member' ) );
+        $form->add( new \IPS\Helpers\Form\Email( 'pe_sender_email', ( $this->send_type == 0 && $this->sender ) ? $this->sender : NULL, TRUE, array(), NULL, NULL, NULL, 'pe_sender_email' ) );
         $form->add( new \IPS\Helpers\Form\Editor('pe_order_content', ( $this->type == 'ordr' ) ? $this->content : NULL, TRUE, array(
             'app' => "printfulintegration",
             'key' => "EmailContent",
@@ -207,16 +200,15 @@ class _Email extends \IPS\Node\Model {
             'attachIds' => array( ( $this->id ?: 'new' ) ),
             'tags' => static::getTemplateVariables('order', TRUE),
         ), NULL, NULL, NULL, 'pe_order_content' ) );
-        $form->add( new \IPS\Helpers\Form\Editor('pe_interval_content', ( $this->type == 'intv' ) ? $this->content : NULL, TRUE, array(
-            'app' => "printfulintegration",
-            'key' => "EmailContent",
-            'autoSaveKey' => ( $this->id ) ? "pe_content_{$this->id}_intv" : "pe_content_new_intv",
-            'attachIds' => array( ( $this->id ?: 'new' ) ),
-            'tags' => static::getTemplateVariables('interval', TRUE),
-        ), NULL, NULL, NULL, 'pe_interval_content' ) );
-        $form->add( new \IPS\Helpers\Form\Interval('pe_interval', $this->interval, TRUE, array(), NULL, NULL, NULL, 'pe_interval' ) );
-        $form->add( new \IPS\Helpers\Form\Select( 'pe_groups', $this->groups ?: '*', TRUE, array( 
-            'options' => \IPS\Member\Group::groups(), 
+
+        $groups = '*';
+
+        if( \is_string( $this->groups ) && $this->groups !== '*' ) {
+            $groups = json_decode( $this->groups, TRUE );
+        }
+
+        $form->add( new \IPS\Helpers\Form\Select( 'pe_groups', $groups, TRUE, array( 
+            'options' => \IPS\Member\Group::groups(TRUE, FALSE), 
             'parse' => 'normal',
             'multiple' => TRUE,
             'unlimited' => "*",
@@ -226,14 +218,43 @@ class _Email extends \IPS\Node\Model {
 
     public function formatFormValues( $values ) {
 
-        $values['pe_content'] = ( $values['pe_type'] == 'ordr' ) ? $values['pe_order_content'] : $values['pe_interval_content'];
+        $values['pe_type'] = 'ordr';
+        $values['pe_content'] = $values['pe_order_content'];
+
+        $values['pe_sender'] = ( $values['pe_send_type'] == 0 ) ? $values['pe_sender_email'] : $values['pe_sender_member']->member_id;
+        unset( $values['pe_sender_email'] );
+        unset( $values['pe_sender_member'] );
+
+        if( $values['pe_groups'] != '*' ) {
+            $groups = array();
+            foreach( $values['pe_groups'] as $group ) {
+                $groups[] = (int) $group;
+            }
+            
+            $values['pe_groups'] = json_encode( $groups );
+        }
+
         unset( $values['pe_order_content'] );
-        unset( $values['pe_interval_content'] );
 
         return $values;
     }
 
     public function get__title() {
         return $this->title;
+    }
+
+    public function get__groups() {
+
+        if( $this->groups === '*' ) {
+            return "*";
+        }
+
+        $groups = json_decode( $this->groups, TRUE );
+
+        if( json_last_error() === JSON_ERROR_NONE ) {
+            return $groups;
+        }
+
+        return [];
     }
 }

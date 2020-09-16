@@ -26,10 +26,6 @@ class _store extends \IPS\Dispatcher\Controller
 			\IPS\Http\Url::internal( "app=printfulintegration&module=store&controller=store", 'front', 'merch_store' ),
 			\IPS\Member::loggedIn()->language()->addToStack('frontnavigation_printfulintegration')
 		);
-
-		if( !\IPS\Member::loggedIn()->member_id ) {
-			\IPS\Output::i()->error('no_module_permission_guest', '2P100/1', 403, 'no_module_permission_guest');
-		}
 		
 		parent::execute();
 	}
@@ -49,7 +45,7 @@ class _store extends \IPS\Dispatcher\Controller
 			$page = 1;
 		}
 		
-		$limit = 25;
+		$limit = 24;
 		$skip = ($page - 1) * $limit;
 		$baseUrl = \IPS\Http\Url::internal('app=printfulintegration&module=store&controller=store', 'front', 'merch_store');
 

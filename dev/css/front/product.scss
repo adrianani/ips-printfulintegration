@@ -177,10 +177,16 @@
         margin: 0 10px;
         border: 1px solid rgba(black, .1);
         border-radius: 5px;
+
+        &.slick-active {
+            border: 1px solid rgb(23, 126, 201);
+            box-shadow: rgba( 52, 128, 187, 0.3 ) 0px 0px 0px 4px;
+        }
     }
 
     .slick-list {
         overflow: hidden;
+        padding: 10px;
     }
 }
 

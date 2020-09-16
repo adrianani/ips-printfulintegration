@@ -21,7 +21,16 @@
                                 <img src='{file="$item->extra['image']" extension="printfulintegration_ProductImage"}' alt="{$item->name}" class="ipsThumb ipsThumb_small">
                             </div>
                             <div class="ipsDataItem_main">
-                                <strong><a href="{$item->url}" class="ipsType_large ipsType_blendLinks">{$item->name}</a></strong>
+                                <strong>
+                                    <a href="{$item->url}" class="ipsType_large ipsType_blendLinks">
+                                        {{try { $product = \IPS\printfulintegration\Product::load( $item->id ); } catch( \Exception $e ) { $product = NULL; } }}
+                                        {{if $product !== NULL}}
+                                            {$product->_title}
+                                        {{else}}
+                                            {$item->name}
+                                        {{endif}}
+                                    </a>
+                                </strong>
                                 <div class="ipsType_medium ipsType_light">
                                     {{if $item->extra['color']}}
                                         <strong>

@@ -1,0 +1,82 @@
+{
+    "1": {
+        "method": "addColumn",
+        "params": [
+            "printfulintegration_products",
+            {
+                "name": "author",
+                "type": "BIGINT",
+                "length": null,
+                "decimals": null,
+                "values": null,
+                "allow_null": true,
+                "default": null,
+                "comment": "",
+                "unsigned": true,
+                "auto_increment": false
+            }
+        ]
+    },
+    "2": {
+        "method": "addColumn",
+        "params": [
+            "printfulintegration_products",
+            {
+                "name": "description",
+                "type": "TEXT",
+                "length": null,
+                "decimals": null,
+                "values": null,
+                "allow_null": true,
+                "default": null,
+                "comment": "",
+                "unsigned": false,
+                "auto_increment": false
+            }
+        ]
+    },
+    "3": {
+        "method": "addColumn",
+        "params": [
+            "printfulintegration_products",
+            {
+                "name": "enabled",
+                "type": "BIT",
+                "length": 0,
+                "decimals": null,
+                "values": null,
+                "allow_null": true,
+                "default": null,
+                "comment": "",
+                "unsigned": false,
+                "auto_increment": false
+            }
+        ]
+    },
+    "4": {
+        "method": "dropColumn",
+        "params": [
+            "printfulintegration_products",
+            "author"
+        ]
+    },
+    "5": {
+        "method": "changeColumn",
+        "params": [
+            "printfulintegration_products",
+            "enabled",
+            {
+                "name": "enabled",
+                "type": "BIT",
+                "length": 1,
+                "decimals": null,
+                "values": [],
+                "allow_null": true,
+                "default": "1",
+                "comment": "",
+                "unsigned": false,
+                "auto_increment": false
+            }
+        ]
+    }
+}

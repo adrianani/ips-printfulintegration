@@ -25,7 +25,15 @@ class _Product extends \IPS\Node\Model {
     public static $databaseColumnEnabledDisabled = 'enabled';
 
     public function url() {
-        return \IPS\Http\Url::internal("app=printfulintegration&module=store&controller=product&id={$this->id}", "front", "merch_product", \IPS\Http\Url\Friendly::seoTitle( $this->title ));
+        $lang = \IPS\Lang::load( \IPS\Lang::defaultLanguage() );
+        $seoTitle = \IPS\Http\Url\Friendly::seoTitle( ( $lang->checkKeyExists("printful_product_{$this->id}") ) ? $lang->get("printful_product_{$this->id}") : $this->title );
+
+        if( $lang->checkKeyExists("printful_product_{$this->id}") ) {
+
+            $seoTitle = \IPS\Http\Url\Friendly::seoTitle( $lang->get("printful_product_{$this->id}") );
+        }
+
+        return \IPS\Http\Url::internal("app=printfulintegration&module=store&controller=product&id={$this->id}", "front", "merch_product", $seoTitle );
     }
 
     public function form( &$form ) {
@@ -108,6 +116,14 @@ class _Product extends \IPS\Node\Model {
     public function get__title() {
         if( \IPS\Member::loggedIn()->language()->checkKeyExists( "printful_product_{$this->id}" ) AND \IPS\Member::loggedIn()->language()->get( "printful_product_{$this->id}" ) !== "" ) {
 			return \IPS\Member::loggedIn()->language()->addToStack( "printful_product_{$this->id}", NULL, array( 'escape' => TRUE ) );
+        }
+
+        return $this->title;
+    }
+
+    public function getTitle() {
+        if( \IPS\Member::loggedIn()->language()->checkKeyExists( "printful_product_{$this->id}" ) AND \IPS\Member::loggedIn()->language()->get( "printful_product_{$this->id}" ) !== "" ) {
+			return \IPS\Member::loggedIn()->language()->get( "printful_product_{$this->id}" );
         }
 
         return $this->title;

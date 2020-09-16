@@ -1,0 +1,29 @@
+{
+    "files": {
+        "added": [],
+        "edited": [
+            "printfulintegration\/front\/controllers\/cart\/shopping.cart.js",
+            "printfulintegration\/front\/controllers\/merch\/list.merch.js",
+            "printfulintegration\/front\/controllers\/product\/page.product.js",
+            "printfulintegration\/admin\/controllers\/products\/ips.products.list.js",
+            "printfulintegration\/front\/controllers\/cart\/shopping.cart.js",
+            "printfulintegration\/front\/controllers\/merch\/list.merch.js",
+            "printfulintegration\/front\/controllers\/product\/page.product.js",
+            "printfulintegration\/admin\/controllers\/products\/ips.products.list.js",
+            "printfulintegration\/front\/controllers\/cart\/shopping.cart.js",
+            "printfulintegration\/front\/controllers\/merch\/list.merch.js",
+            "printfulintegration\/front\/controllers\/product\/page.product.js",
+            "printfulintegration\/admin\/controllers\/products\/ips.products.list.js",
+            "printfulintegration\/front\/controllers\/cart\/shopping.cart.js",
+            "printfulintegration\/front\/controllers\/merch\/list.merch.js",
+            "printfulintegration\/front\/controllers\/product\/page.product.js",
+            "printfulintegration\/admin\/controllers\/products\/ips.products.list.js"
+        ],
+        "removed": []
+    },
+    "orders": {
+        "added": [],
+        "edited": [],
+        "removed": []
+    }
+}

@@ -191,8 +191,15 @@
   border-radius: 5px;
 }
 
+.productImageCarousel_nav img.slick-active {
+  border: 1px solid #177ec9;
+  -webkit-box-shadow: rgba(52, 128, 187, 0.3) 0px 0px 0px 4px;
+          box-shadow: rgba(52, 128, 187, 0.3) 0px 0px 0px 4px;
+}
+
 .productImageCarousel_nav .slick-list {
   overflow: hidden;
+  padding: 10px;
 }
 
 @media screen and (max-width: 979px) {

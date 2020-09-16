@@ -1,0 +1,15 @@
+{
+    "normal": {
+        "added": [
+            "printful_checkout_login",
+            "printful_checkout_register"
+        ],
+        "edited": [],
+        "removed": []
+    },
+    "js": {
+        "added": [],
+        "edited": [],
+        "removed": []
+    }
+}

@@ -15,12 +15,12 @@ if ( !\defined( '\IPS\SUITE_UNIQUE_KEY' ) )
  */
 class _emails extends \IPS\Node\Controller
 {
-
-	public static $csrfProtected = TRUE;
 	/**
 	 * Node Class
 	 */
-	protected $nodeClass = '\IPS\printfulintegration\Email';
+	protected $nodeClass = 'IPS\printfulintegration\Email';
+
+	public static $csrfProtected = TRUE;
 	
 	/**
 	 * Execute

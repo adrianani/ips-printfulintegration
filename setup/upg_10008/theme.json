@@ -1,7 +1,41 @@
 {
     "html": {
-        "added": [],
+        "added": [
+            "front\/store\/newProducts"
+        ],
         "edited": [
+            "front\/checkout\/shippingAddress",
+            "admin\/dashboard\/dashboard",
+            "admin\/products\/pricing",
+            "admin\/products\/product",
+            "admin\/products\/products",
+            "admin\/products\/productsList",
+            "front\/store\/cart",
+            "front\/store\/cartContents",
+            "front\/store\/cartReview",
+            "front\/store\/cartUserBar",
+            "front\/store\/menu",
+            "front\/store\/menuChildren",
+            "front\/store\/product",
+            "front\/store\/productPrice",
+            "front\/store\/store",
+            "front\/store\/storeContent",
+            "front\/checkout\/shippingAddress",
+            "admin\/dashboard\/dashboard",
+            "admin\/products\/pricing",
+            "admin\/products\/product",
+            "admin\/products\/products",
+            "admin\/products\/productsList",
+            "front\/store\/cart",
+            "front\/store\/cartContents",
+            "front\/store\/cartReview",
+            "front\/store\/cartUserBar",
+            "front\/store\/menu",
+            "front\/store\/menuChildren",
+            "front\/store\/product",
+            "front\/store\/productPrice",
+            "front\/store\/store",
+            "front\/store\/storeContent",
             "front\/checkout\/shippingAddress",
             "admin\/dashboard\/dashboard",
             "admin\/products\/pricing",
@@ -23,7 +57,10 @@
     },
     "css": {
         "added": [],
-        "edited": [],
+        "edited": [
+            "front\/product.css",
+            "front\/product.css"
+        ],
         "removed": []
     },
     "resources": {

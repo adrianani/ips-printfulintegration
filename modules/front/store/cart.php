@@ -23,10 +23,6 @@ class _cart extends \IPS\Dispatcher\Controller
 	public function execute()
 	{
 
-		if( !\IPS\Member::loggedIn()->member_id ) {
-			\IPS\Output::i()->error('no_module_permission_guest', '2P103/1', 403);
-		}
-
 		\IPS\Output::i()->breadcrumb['module'] =  array(
 			\IPS\Http\Url::internal('app=printfulintegration&module=store&controller=store', 'front', 'merch_store'),
 			\IPS\Member::loggedIn()->language()->addToStack('frontnavigation_printfulintegration')
@@ -88,6 +84,11 @@ class _cart extends \IPS\Dispatcher\Controller
 	}
 
 	public function checkout() {
+
+		if( !\IPS\Member::loggedIn()->member_id ) {
+			\IPS\Output::i()->error('no_module_permission_guest', '2P104/1', 403);
+		}
+
 		\IPS\Session::i()->csrfCheck();
 		
 		$form = new \IPS\Helpers\Form('checkout', 'continue', NULL, array(
@@ -195,8 +196,13 @@ class _cart extends \IPS\Dispatcher\Controller
 	}
 
 	public function shipping() {
-		\IPS\Session::i()->csrfCheck();
 
+		if( !\IPS\Member::loggedIn()->member_id ) {
+			\IPS\Output::i()->error('no_module_permission_guest', '2P104/1', 403);
+		}
+
+		\IPS\Session::i()->csrfCheck();
+		
 		$data = $_SESSION['printful_doShipping'];
 		$invoice = $data['invoice'];
 		$shippingRate = $data['shippingRate'];
@@ -221,7 +227,7 @@ class _cart extends \IPS\Dispatcher\Controller
 				try
 				{
 					$tax = \IPS\nexus\Tax::load( \IPS\Settings::i()->printful_tax );
-					$rate = new \IPS\Math\Number( $tax->rate( $customer->estimatedLocation() ) );
+					$rate = new \IPS\Math\Number( $tax->rate( \IPS\nexus\Customer::loggedIn()->estimatedLocation() ) );
 					$price = $price->add( $price->multiply( $rate ) );
 				}
 				catch ( \OutOfRangeException $e ) { }
@@ -251,7 +257,7 @@ class _cart extends \IPS\Dispatcher\Controller
 				try
 				{
 					$tax = \IPS\nexus\Tax::load( \IPS\Settings::i()->printful_tax );
-					$rate = new \IPS\Math\Number( $tax->rate( $customer->estimatedLocation() ) );
+					$rate = new \IPS\Math\Number( $tax->rate( \IPS\nexus\Customer::loggedIn()->estimatedLocation() ) );
 					$price = $price->add( $price->multiply( $rate ) );
 				}
 				catch ( \OutOfRangeException $e ) { }

@@ -9,6 +9,7 @@
  <setting key="printful_default_currency"><![CDATA[{"key":"printful_default_currency","default":""}]]></setting>
  <setting key="printful_methods"><![CDATA[{"key":"printful_methods","default":"*"}]]></setting>
  <setting key="printful_price_exchange"><![CDATA[{"key":"printful_price_exchange","default":"1"}]]></setting>
+ <setting key="printful_product_enabled_default"><![CDATA[{"key":"printful_product_enabled_default","default":"1"}]]></setting>
  <setting key="printful_ps_email"><![CDATA[{"key":"printful_ps_email","default":""}]]></setting>
  <setting key="printful_ps_message"><![CDATA[{"key":"printful_ps_message","default":""}]]></setting>
  <setting key="printful_ps_phone"><![CDATA[{"key":"printful_ps_phone","default":""}]]></setting>

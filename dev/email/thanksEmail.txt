@@ -1,0 +1,6 @@
+<ips:template parameters="$title, $message, $email" />
+
+-----
+{expression="\IPS\Email::buildPlaintextBody( $message )"}
+-----
+-- {setting="board_name"}

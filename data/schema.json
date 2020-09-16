@@ -100,7 +100,7 @@
             },
             "enabled": {
                 "name": "enabled",
-                "type": "BIT",
+                "type": "TINYINT",
                 "length": 1,
                 "decimals": null,
                 "values": [],
@@ -469,105 +469,118 @@
             }
         }
     },
-    "printfulintegration_emails": {
-        "name": "printfulintegration_emails",
+    "printfulintegration_email": {
+        "name": "printfulintegration_email",
         "columns": {
-            "pe_type": {
-                "name": "pe_type",
-                "type": "VARCHAR",
-                "length": 6,
-                "decimals": null,
-                "values": null,
-                "allow_null": true,
-                "default": null,
-                "comment": "",
-                "unsigned": false,
-                "auto_increment": false
-            },
-            "pe_content": {
-                "name": "pe_content",
-                "type": "TEXT",
-                "length": null,
-                "decimals": null,
-                "values": null,
-                "allow_null": true,
-                "default": null,
-                "comment": "",
-                "unsigned": false,
-                "auto_increment": false
-            },
-            "pe_interval": {
-                "name": "pe_interval",
-                "type": "VARCHAR",
-                "length": 32,
-                "decimals": null,
-                "values": null,
-                "allow_null": true,
-                "default": null,
-                "comment": "",
-                "unsigned": false,
-                "auto_increment": false
-            },
-            "pe_order": {
-                "name": "pe_order",
-                "type": "BIGINT",
-                "length": null,
-                "decimals": null,
-                "values": null,
-                "allow_null": true,
-                "default": null,
-                "comment": "",
-                "unsigned": false,
-                "auto_increment": false
-            },
             "pe_id": {
+                "allow_null": false,
+                "auto_increment": true,
+                "comment": "ID Number",
+                "decimals": null,
+                "default": null,
+                "length": 20,
                 "name": "pe_id",
                 "type": "BIGINT",
-                "length": "20",
-                "decimals": null,
-                "values": null,
-                "allow_null": false,
-                "default": null,
-                "comment": "ID Number",
                 "unsigned": true,
-                "auto_increment": true
+                "values": []
+            },
+            "pe_type": {
+                "allow_null": true,
+                "auto_increment": false,
+                "comment": "",
+                "decimals": null,
+                "default": "ordr",
+                "length": 6,
+                "name": "pe_type",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": []
+            },
+            "pe_content": {
+                "allow_null": true,
+                "auto_increment": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 0,
+                "name": "pe_content",
+                "type": "TEXT",
+                "unsigned": false,
+                "values": []
             },
             "pe_title": {
+                "allow_null": true,
+                "auto_increment": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 256,
                 "name": "pe_title",
                 "type": "VARCHAR",
-                "length": 256,
-                "decimals": null,
-                "values": null,
-                "allow_null": true,
-                "default": null,
-                "comment": "",
                 "unsigned": false,
-                "auto_increment": false
+                "values": []
             },
             "pe_groups": {
+                "allow_null": true,
+                "auto_increment": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 256,
                 "name": "pe_groups",
                 "type": "VARCHAR",
-                "length": 256,
-                "decimals": null,
-                "values": null,
-                "allow_null": true,
-                "default": null,
-                "comment": "",
                 "unsigned": false,
-                "auto_increment": false
+                "values": []
+            },
+            "pe_order": {
+                "allow_null": true,
+                "auto_increment": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 20,
+                "name": "pe_order",
+                "type": "BIGINT",
+                "unsigned": true,
+                "values": []
+            },
+            "pe_send_type": {
+                "allow_null": true,
+                "auto_increment": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 4,
+                "name": "pe_send_type",
+                "type": "TINYINT",
+                "unsigned": false,
+                "values": []
+            },
+            "pe_sender": {
+                "allow_null": true,
+                "auto_increment": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 256,
+                "name": "pe_sender",
+                "type": "VARCHAR",
+                "unsigned": false,
+                "values": []
             }
         },
         "indexes": {
             "PRIMARY": {
                 "type": "primary",
                 "name": "PRIMARY",
-                "columns": [
-                    "pe_id"
-                ],
                 "length": [
                     null
+                ],
+                "columns": [
+                    "pe_id"
                 ]
             }
-        }
+        },
+        "collation": "utf8mb4_unicode_ci"
     }
 }

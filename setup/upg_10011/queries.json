@@ -1,0 +1,120 @@
+{
+    "1": {
+        "method": "createTable",
+        "params": [
+            {
+                "name": "printfulintegration_email",
+                "columns": {
+                    "pe_id": {
+                        "name": "pe_id",
+                        "type": "BIGINT",
+                        "length": "20",
+                        "decimals": null,
+                        "values": null,
+                        "allow_null": false,
+                        "default": null,
+                        "comment": "ID Number",
+                        "unsigned": true,
+                        "auto_increment": true
+                    },
+                    "pe_content": {
+                        "name": "pe_content",
+                        "type": "TEXT",
+                        "length": null,
+                        "decimals": null,
+                        "values": null,
+                        "allow_null": true,
+                        "default": null,
+                        "comment": "",
+                        "unsigned": false,
+                        "auto_increment": false
+                    },
+                    "pe_title": {
+                        "name": "pe_title",
+                        "type": "VARCHAR",
+                        "length": 256,
+                        "decimals": null,
+                        "values": null,
+                        "allow_null": true,
+                        "default": null,
+                        "comment": "",
+                        "unsigned": false,
+                        "auto_increment": false
+                    },
+                    "pe_groups": {
+                        "name": "pe_groups",
+                        "type": "VARCHAR",
+                        "length": 256,
+                        "decimals": null,
+                        "values": null,
+                        "allow_null": true,
+                        "default": null,
+                        "comment": "",
+                        "unsigned": false,
+                        "auto_increment": false
+                    },
+                    "pe_type": {
+                        "name": "pe_type",
+                        "type": "VARCHAR",
+                        "length": 6,
+                        "decimals": null,
+                        "values": null,
+                        "allow_null": true,
+                        "default": "ordr",
+                        "comment": "",
+                        "unsigned": false,
+                        "auto_increment": false
+                    },
+                    "pe_order": {
+                        "name": "pe_order",
+                        "type": "BIGINT",
+                        "length": null,
+                        "decimals": null,
+                        "values": null,
+                        "allow_null": true,
+                        "default": null,
+                        "comment": "",
+                        "unsigned": true,
+                        "auto_increment": false
+                    },
+                    "pe_send_type": {
+                        "name": "pe_send_type",
+                        "type": "TINYINT",
+                        "length": null,
+                        "decimals": null,
+                        "values": null,
+                        "allow_null": true,
+                        "default": "0",
+                        "comment": "",
+                        "unsigned": false,
+                        "auto_increment": false
+                    },
+                    "pe_sender": {
+                        "name": "pe_sender",
+                        "type": "VARCHAR",
+                        "length": 256,
+                        "decimals": null,
+                        "values": null,
+                        "allow_null": true,
+                        "default": null,
+                        "comment": "",
+                        "unsigned": true,
+                        "auto_increment": false
+                    }
+                },
+                "indexes": {
+                    "PRIMARY": {
+                        "type": "primary",
+                        "name": "PRIMARY",
+                        "columns": [
+                            "pe_id"
+                        ],
+                        "length": [
+                            null
+                        ]
+                    }
+                }
+            }
+        ]
+    }
+}

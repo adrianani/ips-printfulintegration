@@ -10,27 +10,16 @@
                 slidesToShow: 1,
                 arrows: false,
                 fade: true,
-                asNavFor: '.productImageCarousel_nav',
+                asNavFor: '.productImageCarousel_nav'
             });
 
             $('.productImageCarousel_nav').slick({
                 infinite: true,
-                slidesToShow: 3,
                 slidesToScroll: 1,
-                centerMode: true,
                 arrows: false,
                 asNavFor: '.productImageCarousel',
-                centerPadding: '50px',
                 focusOnSelect: true,
-                variableWidth: true,
-                responsive: [
-                    {
-                        breakpoint: 470,
-                        settings: {
-                            slidesToShow: 2,
-                        }
-                    }
-                ]
+                variableWidth: true
             });
 
             this._prices = this.scope.find('.cPrintful_itemPrice').data('pricing');

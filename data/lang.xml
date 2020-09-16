@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <language>
- <app key="printfulintegration" version="10008">
+ <app key="printfulintegration" version="10100">
   <word key="__app_printfulintegration" js="0">Printful Commerce Integration</word>
   <word key="printful_variants_no" js="0">{# [1:variant][?:variants]}</word>
   <word key="printful_add_to_store" js="0">Mark for import</word>
@@ -65,7 +65,7 @@
   <word key="printful_no_pricing_sync" js="0">Pricing changes here don't affect your Printful's store. (they don't sync)</word>
   <word key="printful_not_available" js="0">Product not available</word>
   <word key="printful_pricing" js="0">Edit prices</word>
-  <word key="printful_product_title" js="0">Product title</word>
+  <word key="printful_product_title" js="0">Title</word>
   <word key="printful_product_images" js="0">Images</word>
   <word key="printful_tab_api" js="0">API Settings</word>
   <word key="printful_tab_store" js="0">Store</word>
@@ -78,6 +78,49 @@
   <word key="printful_price_exchange" js="0">Price exchange</word>
   <word key="printful_price_exchange_desc" js="0">If this is enabled products that don't have a price set for the user currency will be converted else they will be displayed as not available</word>
   <word key="printful_orders" js="0">Orders</word>
+  <word key="printful_product_desc" js="0">Description</word>
+  <word key="printful_product_description" js="0">Product description</word>
+  <word key="printful_product_enabled" js="0">Show product in the store?</word>
+  <word key="printful_product_enabled_default" js="0">Show products in the store after import?</word>
+  <word key="menu__printfulintegration_overview_emails" js="0">Messages</word>
+  <word key="printful_email_campaign" js="0">Automated messages</word>
+  <word key="pe_title" js="0">Subject</word>
+  <word key="pe_type" js="0">Type</word>
+  <word key="pe_order" js="0">Order complete</word>
+  <word key="pe_interval" js="0">Time interval</word>
+  <word key="pe_order_content" js="0">Content</word>
+  <word key="pe_interval_content" js="0">Content</word>
+  <word key="pe_groups" js="0">Groups to include</word>
+  <word key="pe_var_order_id" js="0">Order ID</word>
+  <word key="pe_var_order_url" js="0">Order URL</word>
+  <word key="pe_var_order_total" js="0">Order costs including printful costs and earnings</word>
+  <word key="pe_var_member_id" js="0">Member ID</word>
+  <word key="pe_var_member_name" js="0">Member name</word>
+  <word key="pe_var_member_joined" js="0">Member register date time</word>
+  <word key="pe_var_member_url" js="0">Member profile URL</word>
+  <word key="pe_var_member_last_visit" js="0">The last time the member visited this website</word>
+  <word key="pe_var_member_posts" js="0">Member's content count</word>
+  <word key="pe_var_member_total_expenses" js="0">Total value of merch orders of this customer</word>
+  <word key="pe_var_suite_name" js="0">Community name</word>
+  <word key="pe_var_suite_url" js="0">Community URL</word>
+  <word key="pe_var_suite_members" js="0">Total number of registered members</word>
+  <word key="pe_var_suite_posts" js="0">Total content count</word>
+  <word key="pe_var_suite_most_active" js="0">Most concurrent members online</word>
+  <word key="pe_var_suite_most_active_date" js="0">The date time at which the most concurrent members online took place.</word>
+  <word key="pe_var_merch_url" js="0">Merch store URL</word>
+  <word key="pe_var_merch_new_products" js="0">A list with the 5 newest products in the merch store</word>
+  <word key="pe_opted_out" js="0">Members which opted out of bulk emails (newsletter) will not receive time interval emails.</word>
+  <word key="pe_type_email" js="0">Email</word>
+  <word key="pe_type_pm" js="0">Personal Message</word>
+  <word key="pe_send_type" js="0">Send as</word>
+  <word key="pe_sender_member" js="0">From</word>
+  <word key="pe_sender_member_desc" js="0">Who sent this PM?</word>
+  <word key="pe_sender_email" js="0">From</word>
+  <word key="pe_sender_email_desc" js="0">Email address to use when sending the message</word>
+  <word key="printful_product_disabled" js="0">This product is currently disabled but shown to you because you are an administrator</word>
+  <word key="printful_checkout_login" js="0">Login to checkout</word>
+  <word key="printful_checkout_register" js="0">Sign up</word>
+  <word key="mailsub__printfulintegration_thanksEmail" js="0">{$title}</word>
   <word key="printful_add_to_store_undo" js="1">Unmark for import</word>
   <word key="printful_add_to_store" js="1">Mark for import</word>
   <word key="printfulSelectedForImport" js="1">With {# [?:selected]}</word>

@@ -99,7 +99,7 @@ class _settings extends \IPS\Dispatcher\Controller
 
 			$refresh = FALSE;
 
-			if( $values['printful_methods'] !== '*' ) {
+			if( isset( $values['printful_methods'] ) && $values['printful_methods'] !== '*' ) {
 
 				$values['printful_methods'] = array_map( function( $method ) {
 

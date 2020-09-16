@@ -20,6 +20,12 @@ public static function hookData() {
       'type' => 'add_before',
       'content' => '{template="cartUserBar" app="printfulintegration" location="front" group="store" params=""}',
     ),
+    1 => 
+    array (
+      'selector' => '#elSignInLink',
+      'type' => 'add_before',
+      'content' => '{template="cartUserBar" app="printfulintegration" location="front" group="store" params=""}',
+    ),
   ),
 ), parent::hookData() );
 }

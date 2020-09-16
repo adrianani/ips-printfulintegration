@@ -13,9 +13,23 @@
             <li class="ipsPos_left">
                 <a class="ipsButton ipsButton_medium ipsButton_link ipsButton_narrow" href="{url='app=printfulintegration&module=store&controller=cart&do=clear' csrf='1' seoTemplate='merch_cart'}" data-confirm><i class="fa fa-times"></i> {lang="empty_cart"}</a>
             </li>
-            <li class="ipsToolList_primaryAction">
-                <a id="cartCheckout" class="ipsButton ipsButton_large ipsButton_important ipsButton_fullWidth" data-ipsDialog data-ipsDialog-title="{lang='choose_shipping_address'}" href="{url='app=printfulintegration&module=store&controller=cart&do=checkout' csrf='1' seoTemplate='merch_cart'}"><i class="fa fa-money"></i>&nbsp; Checkout</a>
-            </li>
+            {{if \IPS\Member::loggedIn()->member_id}}
+                <li class="ipsToolList_primaryAction">
+                    <a id="cartCheckout" class="ipsButton ipsButton_large ipsButton_important ipsButton_fullWidth" data-ipsDialog data-ipsDialog-title="{lang='choose_shipping_address'}" data-ipsDialog-forceReload="true" href="{url='app=printfulintegration&module=store&controller=cart&do=checkout' csrf='1' seoTemplate='merch_cart'}"><i class="fa fa-money"></i>&nbsp; Checkout</a>
+                </li>
+            {{else}}
+                {{$base64ref = @base64_encode( \IPS\Http\Url::internal( 'app=printfulintegration&module=store&controller=cart', NULL, 'merch_cart' ) );}}
+                <li>
+                    <a href='{url="app=core&module=system&controller=register&ref=$base64ref" seoTemplate="register"}' class="ipsButton ipsButton_large ipsButton_primary">
+                        {lang="printful_checkout_register"}
+                    </a>
+                </li>
+                <li class="ipsToolList_primaryAction">
+                    <a href='{url="app=core&module=system&controller=login&ref=$base64ref" seoTemplate="login"}' class="ipsButton ipsButton_large ipsButton_veryLight">
+                        <strong> {lang="printful_checkout_login"} </strong>
+                    </a>
+                </li>
+            {{endif}}
         </ul>
     </div>
 </div>

@@ -1,0 +1,47 @@
+{
+    "normal": {
+        "added": [
+            "printful_product_desc",
+            "printful_product_description",
+            "printful_product_enabled",
+            "printful_product_enabled_default",
+            "menu__printfulintegration_overview_emails",
+            "printful_email_campaign",
+            "pe_title",
+            "pe_type",
+            "pe_order",
+            "pe_interval",
+            "pe_order_content",
+            "pe_interval_content",
+            "pe_groups",
+            "pe_var_order_id",
+            "pe_var_order_url",
+            "pe_var_order_total",
+            "pe_var_member_id",
+            "pe_var_member_name",
+            "pe_var_member_joined",
+            "pe_var_member_url",
+            "pe_var_member_last_visit",
+            "pe_var_member_posts",
+            "pe_var_member_total_expenses",
+            "pe_var_suite_name",
+            "pe_var_suite_url",
+            "pe_var_suite_members",
+            "pe_var_suite_posts",
+            "pe_var_suite_most_active",
+            "pe_var_suite_most_active_date",
+            "pe_var_merch_url",
+            "pe_var_merch_new_products",
+            "pe_opted_out"
+        ],
+        "edited": [
+            "printful_product_title"
+        ],
+        "removed": []
+    },
+    "js": {
+        "added": [],
+        "edited": [],
+        "removed": []
+    }
+}

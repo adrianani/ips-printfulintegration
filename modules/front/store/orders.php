@@ -29,10 +29,6 @@ class _orders extends \IPS\Dispatcher\Controller
 			\IPS\Http\Url::internal( "app=printfulintegration&module=store&controller=store", 'front', 'merch_store' ),
 			\IPS\Member::loggedIn()->language()->addToStack('frontnavigation_printfulintegration')
 		);
-
-		if( !\IPS\Member::loggedIn()->member_id ) {
-			\IPS\Output::i()->error('no_module_permission_guest', '2P104/1', 403);
-		}
 		
 		parent::execute();
 	}
