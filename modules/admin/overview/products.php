@@ -29,7 +29,7 @@ class _products extends \IPS\Node\Controller
 
             if( \IPS\printfulintegration\Api::i()->apiKey() ) {
                 $page = isset( \IPS\Request::i()->page ) ? \IPS\Request::i()->page : 1;
-                $limit = 20;
+                $limit = 5;
                 $offset = ($page - 1) * $limit;
                 $apiProducts = \IPS\printfulintegration\Api::i()->getProducts($offset, $limit, \IPS\Request::i()->printfulSearch);
                 $products = $apiProducts['result'];
