@@ -239,7 +239,7 @@ class _Product extends \IPS\Node\Model {
         
 		$price = $price->round(2, 2);
 
-        return $html ? \IPS\Theme::i()->getTemplate('store')->productPrice( new \IPS\nexus\Money( $price, $currency ) ) : new \IPS\nexus\Money( $price, $currency );
+        return $html ? \IPS\Theme::i()->getTemplate('store', 'printfulintegration')->productPrice( new \IPS\nexus\Money( $price, $currency ) ) : new \IPS\nexus\Money( $price, $currency );
     }
 
     public function getButtons($url, $subnode = FALSE) {

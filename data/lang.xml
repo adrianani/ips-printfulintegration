@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <language>
- <app key="printfulintegration" version="10100">
+ <app key="printfulintegration" version="10101">
   <word key="__app_printfulintegration" js="0">Printful Commerce Integration</word>
   <word key="printful_variants_no" js="0">{# [1:variant][?:variants]}</word>
   <word key="printful_add_to_store" js="0">Mark for import</word>
@@ -120,7 +120,13 @@
   <word key="printful_product_disabled" js="0">This product is currently disabled but shown to you because you are an administrator</word>
   <word key="printful_checkout_login" js="0">Login to checkout</word>
   <word key="printful_checkout_register" js="0">Sign up</word>
+  <word key="printful_address_error" js="0">The address you've entered in missing some data. Enter a correct address, street and postcode!</word>
   <word key="mailsub__printfulintegration_thanksEmail" js="0">{$title}</word>
+  <word key="block_printfulFeaturedItems" js="0">Featured merch items</word>
+  <word key="block_printfulFeaturedItems_desc" js="0">Create a block containing featured items from the merch store.</word>
+  <word key="pfi_title" js="0">Block title</word>
+  <word key="pfi_items" js="0">Items</word>
+  <word key="pfi_items_desc" js="0">Type the name of a product to search your store. At least 3 characters are required for the search.</word>
   <word key="printful_add_to_store_undo" js="1">Unmark for import</word>
   <word key="printful_add_to_store" js="1">Mark for import</word>
   <word key="printfulSelectedForImport" js="1">With {# [?:selected]}</word>

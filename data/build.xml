@@ -15,6 +15,7 @@
  <setting key="printful_ps_phone"><![CDATA[{"key":"printful_ps_phone","default":""}]]></setting>
  <setting key="printful_tax"><![CDATA[{"key":"printful_tax","default":"0"}]]></setting>
  <setting key="printful_use_exchange_api"><![CDATA[{"key":"printful_use_exchange_api","default":"1"}]]></setting>
+ <widget key="printfulFeaturedItems"><![CDATA[{"class":"\\IPS\\Widget\\StaticCache","restrict":["sidebar","cms"],"default_area":"","allow_reuse":true,"menu_style":"modal","embeddable":true}]]></widget>
  <hook key="F_Core_global"><![CDATA[{"type":"S","class":"\\IPS\\Theme\\class_core_front_global"}]]></hook>
  <hook key="N_Invoice"><![CDATA[{"type":"C","class":"\\IPS\\nexus\\Invoice"}]]></hook>
  <hook key="XF_Clients_Invoices"><![CDATA[{"type":"C","class":"\\IPS\\nexus\\modules\\front\\clients\\invoices"}]]></hook>

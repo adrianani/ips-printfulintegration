@@ -71,15 +71,17 @@
 
                 ips.getContainer().append(content);
 
-                let dialog = ips.ui.dialog.create({
-                    title: this.scope.find('.ipsType_pageTitle.ipsType_largeTitle').text(),
-                    content,
-                    size: 'narrow',
-                    forceReload: true,
-                    modal: true,
-                });
+                if( response.content ) {
+                    let dialog = ips.ui.dialog.create({
+                        title: this.scope.find('.ipsType_pageTitle.ipsType_largeTitle').text(),
+                        content,
+                        size: 'narrow',
+                        forceReload: true,
+                        modal: true,
+                    });
 
-                dialog.show();
+                    dialog.show();
+                }
 
                 if( response.cart ) {
                     $('#printfulCart_container').replaceWith( response.cart );

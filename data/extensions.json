@@ -5,7 +5,6 @@
             "ProductDesc": "IPS\\printfulintegration\\extensions\\core\\EditorLocations\\ProductDesc"
         },
         "FileStorage": {
-            "Category": "IPS\\printfulintegration\\extensions\\core\\FileStorage\\Category",
             "ProductImage": "IPS\\printfulintegration\\extensions\\core\\FileStorage\\ProductImage"
         },
         "FrontNavigation": {

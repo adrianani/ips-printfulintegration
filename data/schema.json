@@ -402,72 +402,67 @@
         "name": "printfulintegration_invoices",
         "columns": {
             "id": {
+                "allow_null": false,
+                "auto_increment": true,
+                "comment": "ID Number",
+                "decimals": null,
+                "default": null,
+                "length": 20,
                 "name": "id",
                 "type": "BIGINT",
-                "length": "20",
                 "unsigned": true,
-                "zerofill": false,
-                "binary": false,
-                "allow_null": false,
-                "default": null,
-                "auto_increment": true,
-                "comment": "ID Number"
+                "values": []
             },
             "printful_order_id": {
+                "allow_null": true,
+                "auto_increment": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 20,
                 "name": "printful_order_id",
                 "type": "BIGINT",
-                "length": 20,
-                "decimals": null,
-                "values": null,
-                "allow_null": true,
-                "default": null,
-                "comment": "",
                 "unsigned": true,
-                "zerofill": false,
-                "auto_increment": false,
-                "binary": false
+                "values": []
             },
             "invoice_id": {
+                "allow_null": true,
+                "auto_increment": false,
+                "comment": "",
+                "decimals": null,
+                "default": null,
+                "length": 20,
                 "name": "invoice_id",
                 "type": "BIGINT",
-                "length": 20,
-                "decimals": null,
-                "values": null,
-                "allow_null": true,
-                "default": null,
-                "comment": "",
                 "unsigned": true,
-                "zerofill": false,
-                "auto_increment": false,
-                "binary": false
+                "values": []
             },
             "printful_order_total": {
+                "allow_null": false,
+                "auto_increment": false,
+                "comment": "",
+                "decimals": null,
+                "default": "0",
+                "length": 0,
                 "name": "printful_order_total",
                 "type": "FLOAT",
-                "length": 20,
-                "decimals": 2,
-                "values": null,
-                "allow_null": false,
-                "default": "0.00",
-                "comment": "",
                 "unsigned": false,
-                "zerofill": false,
-                "auto_increment": false,
-                "binary": false
+                "values": []
             }
         },
         "indexes": {
             "PRIMARY": {
                 "type": "primary",
                 "name": "PRIMARY",
-                "columns": [
-                    "id"
-                ],
                 "length": [
                     null
+                ],
+                "columns": [
+                    "id"
                 ]
             }
-        }
+        },
+        "collation": "utf8mb4_unicode_ci"
     },
     "printfulintegration_email": {
         "name": "printfulintegration_email",

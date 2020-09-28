@@ -38,6 +38,15 @@ class _cart extends \IPS\Dispatcher\Controller
 	 */
 	protected function manage()
 	{
+		if( !isset( $_SESSION['printful_cart'] ) ) {
+			$_SESSION['printful_cart'] = array();
+		
+			if ( \IPS\CACHE_PAGE_TIMEOUT and !\IPS\Member::loggedIn()->member_id )
+			{
+				\IPS\Request::i()->setCookie( 'noCache', 0, \IPS\DateTime::ts( time() - 86400 ) );
+			}
+		}
+		
 		\IPS\Output::i()->title = \IPS\Member::loggedIn()->language()->addToStack('printful_cart');
 		\IPS\Output::i()->sidebar['enabled'] = FALSE;
 		\IPS\Output::i()->breadcrumb[] = array(
@@ -79,7 +88,13 @@ class _cart extends \IPS\Dispatcher\Controller
 	protected function clear() {
 		\IPS\Request::i()->confirmedDelete();
 
-		unset( $_SESSION['printful_cart'] );		
+		unset( $_SESSION['printful_cart'] );	
+		
+		if ( empty( $_SESSION['cart'] ) and \IPS\CACHE_PAGE_TIMEOUT and !\IPS\Member::loggedIn()->member_id )
+		{
+			\IPS\Request::i()->setCookie( 'noCache', 0, \IPS\DateTime::ts( time() - 86400 ) );
+		}
+			
 		\IPS\Output::i()->redirect( \IPS\Http\Url::internal("app=printfulintegration&module=store&controller=store")->csrf(), 'printful_cleared_cart' );
 	}
 
@@ -129,7 +144,7 @@ class _cart extends \IPS\Dispatcher\Controller
 				$address = \IPS\nexus\Customer\Address::load( $values['shipping_address'] )->address;
 			}
 			
-			if( !empty( $address->addressLines ) AND !empty( $address->city ) AND !empty( $address->region ) AND !empty( $address->country ) ) {
+			if( !empty( $address->addressLines ) AND !empty( $address->city ) AND !empty( $address->country ) ) {
 				
 				// create internal invoice
 				$currency = ( isset( \IPS\Request::i()->cookie['currency'] ) and \in_array( \IPS\Request::i()->cookie['currency'], \IPS\nexus\Money::currencies() ) ) ? \IPS\Request::i()->cookie['currency'] : \IPS\nexus\Customer::loggedIn()->defaultCurrency();
@@ -197,124 +212,133 @@ class _cart extends \IPS\Dispatcher\Controller
 
 	public function shipping() {
 
-		if( !\IPS\Member::loggedIn()->member_id ) {
-			\IPS\Output::i()->error('no_module_permission_guest', '2P104/1', 403);
-		}
-
-		\IPS\Session::i()->csrfCheck();
-		
-		$data = $_SESSION['printful_doShipping'];
-		$invoice = $data['invoice'];
-		$shippingRate = $data['shippingRate'];
-		$printfulItems = $data['printfulItems'];
-		$recipient = $data['recipient'];
-		$currency = $invoice->currency;
-		$conversionRates = \IPS\printfulintegration\Application::conversionRates( TRUE );
-
-		$form = new \IPS\Helpers\Form('shipping_method', 'continue');
-
-		$options = array();
-
-		foreach( $shippingRate as $method ) {
-
-			$price = new \IPS\Math\Number((string) $method['rate']);
-			if( $currency !== \IPS\Settings::i()->printful_default_currency ) {
-				$price = $price->multiply( new \IPS\Math\Number( number_format( $conversionRates[ $currency ], 4, '.', '' ) ) );
+		try {
+			if( !\IPS\Member::loggedIn()->member_id ) {
+				\IPS\Output::i()->error('no_module_permission_guest', '2P104/2', 403);
 			}
 
-			if (\IPS\Settings::i()->printful_tax !== 0 )
-			{
-				try
-				{
-					$tax = \IPS\nexus\Tax::load( \IPS\Settings::i()->printful_tax );
-					$rate = new \IPS\Math\Number( $tax->rate( \IPS\nexus\Customer::loggedIn()->estimatedLocation() ) );
-					$price = $price->add( $price->multiply( $rate ) );
-				}
-				catch ( \OutOfRangeException $e ) { }
-			}
-
-			$price = $price->round(2, 2);
-
-			$options[ $method['id'] ] = \IPS\Member::loggedIn()->language()->addToStack('shipping_method_option', FALSE, array( 
-				'sprintf' => array( new \IPS\nexus\Money($price, $currency), $method['name'] )
-			));
-		}
-		
-		$form->add( new \IPS\Helpers\Form\Radio( 'choose_shipping_method', 'STANDARD', TRUE, array(
-			'options' => $options,
-		) ) );
-
-		if($values = $form->values()) {
-			$index = array_search( $values['choose_shipping_method'], array_column( $shippingRate, 'id' ) );
-
-			$price = new \IPS\Math\Number((string) $shippingRate[ $index ]['rate']);
-			if( $currency !== \IPS\Settings::i()->printful_default_currency ) {
-				$price = $price->multiply( new \IPS\Math\Number( number_format( $conversionRates[ $currency ], 4, '.', '' ) ) );
-			}
-
-			if (\IPS\Settings::i()->printful_tax !== 0 )
-			{
-				try
-				{
-					$tax = \IPS\nexus\Tax::load( \IPS\Settings::i()->printful_tax );
-					$rate = new \IPS\Math\Number( $tax->rate( \IPS\nexus\Customer::loggedIn()->estimatedLocation() ) );
-					$price = $price->add( $price->multiply( $rate ) );
-				}
-				catch ( \OutOfRangeException $e ) { }
+			\IPS\Session::i()->csrfCheck();
+			
+			if( empty( $_SESSION['printful_doShipping'] ) ) {
+				\IPS\Output::i()->error('printful_address_error', '2P104/3', 400);
 			}
 			
-			$price = $price->round(2, 2);
+			$data = $_SESSION['printful_doShipping'];
+			$invoice = $data['invoice'];
+			$shippingRate = $data['shippingRate'];
+			$printfulItems = $data['printfulItems'];
+			$recipient = $data['recipient'];
+			$currency = $invoice->currency;
+			$conversionRates = \IPS\printfulintegration\Application::conversionRates( TRUE );
 
-			$shipping = new \IPS\printfulintegration\extensions\nexus\Item\PrintfulProduct( 'Shipping: ' . $shippingRate[ $index ]['name'], new \IPS\nexus\Money($price, $currency) );
-			$shipping->extra = array(
-				'image' => "",
-				'shipping' => TRUE,
-			);
-			$shipping->paymentMethodIds = \IPS\Settings::i()->printful_methods;
-			
-			$invoice->addItem($shipping, 'shipping');
-			$invoice->save();
+			$form = new \IPS\Helpers\Form('shipping_method', 'continue');
 
-			$printfulOrder = \IPS\printfulintegration\Api::i()->createOrder($recipient, $printfulItems, $invoice->id, $values['choose_shipping_method'], $invoice->currency);
+			$options = array();
 
-			// In case someone spams the save button
-			try {
-				\IPS\Db::i()->insert('printfulintegration_invoices', array(
-					'printful_order_id' => $printfulOrder['id'],
-					'invoice_id' => $invoice->id,
-					'printful_order_total' => $printfulOrder['costs']['total'],
+			foreach( $shippingRate as $method ) {
+
+				$price = new \IPS\Math\Number((string) $method['rate']);
+				if( $currency !== \IPS\Settings::i()->printful_default_currency ) {
+					$price = $price->multiply( new \IPS\Math\Number( number_format( $conversionRates[ $currency ], 4, '.', '' ) ) );
+				}
+
+				if (\IPS\Settings::i()->printful_tax !== 0 )
+				{
+					try
+					{
+						$tax = \IPS\nexus\Tax::load( \IPS\Settings::i()->printful_tax );
+						$rate = new \IPS\Math\Number( $tax->rate( \IPS\nexus\Customer::loggedIn()->estimatedLocation() ) );
+						$price = $price->add( $price->multiply( $rate ) );
+					}
+					catch ( \OutOfRangeException $e ) { }
+				}
+
+				$price = $price->round(2, 2);
+
+				$options[ $method['id'] ] = \IPS\Member::loggedIn()->language()->addToStack('shipping_method_option', FALSE, array( 
+					'sprintf' => array( new \IPS\nexus\Money($price, $currency), $method['name'] )
 				));
-			} catch( \Exception $e ) {}
+			}
 			
-				
-			unset( $_SESSION['printful_doShipping'], $_SESSION['printful_cart'] );
+			$form->add( new \IPS\Helpers\Form\Radio( 'choose_shipping_method', 'STANDARD', TRUE, array(
+				'options' => $options,
+			) ) );
 
-			\IPS\Output::i()->redirect( $invoice->checkoutUrl() );
-		}
-		
-		\IPS\Output::i()->title = \IPS\Member::loggedIn()->language()->addToStack('choose_shipping_method');
-		\IPS\Output::i()->breadcrumb = array_merge(
-			\IPS\Output::i()->breadcrumb,
-			array(
-				'module' =>  array(
-					\IPS\Http\Url::internal('app=printfulintegration&module=store&controller=store', 'front', 'merch_store'),
-					\IPS\Member::loggedIn()->language()->addToStack('frontnavigation_printfulintegration')
-				),
+			if($values = $form->values()) {
+				$index = array_search( $values['choose_shipping_method'], array_column( $shippingRate, 'id' ) );
+
+				$price = new \IPS\Math\Number((string) $shippingRate[ $index ]['rate']);
+				if( $currency !== \IPS\Settings::i()->printful_default_currency ) {
+					$price = $price->multiply( new \IPS\Math\Number( number_format( $conversionRates[ $currency ], 4, '.', '' ) ) );
+				}
+
+				if (\IPS\Settings::i()->printful_tax !== 0 )
+				{
+					try
+					{
+						$tax = \IPS\nexus\Tax::load( \IPS\Settings::i()->printful_tax );
+						$rate = new \IPS\Math\Number( $tax->rate( \IPS\nexus\Customer::loggedIn()->estimatedLocation() ) );
+						$price = $price->add( $price->multiply( $rate ) );
+					}
+					catch ( \OutOfRangeException $e ) { }
+				}
+				
+				$price = $price->round(2, 2);
+
+				$shipping = new \IPS\printfulintegration\extensions\nexus\Item\PrintfulProduct( 'Shipping: ' . $shippingRate[ $index ]['name'], new \IPS\nexus\Money($price, $currency) );
+				$shipping->extra = array(
+					'image' => "",
+					'shipping' => TRUE,
+				);
+				$shipping->paymentMethodIds = \IPS\Settings::i()->printful_methods;
+				
+				$invoice->addItem($shipping, 'shipping');
+				$invoice->save();
+
+				$printfulOrder = \IPS\printfulintegration\Api::i()->createOrder($recipient, $printfulItems, $invoice->id, $values['choose_shipping_method'], $invoice->currency);
+
+				// In case someone spams the save button
+				try {
+					\IPS\Db::i()->insert('printfulintegration_invoices', array(
+						'printful_order_id' => $printfulOrder['id'],
+						'invoice_id' => $invoice->id,
+						'printful_order_total' => $printfulOrder['costs']['total'],
+					));
+				} catch( \Exception $e ) {}
+				
+					
+				unset( $_SESSION['printful_doShipping'], $_SESSION['printful_cart'] );
+
+				\IPS\Output::i()->redirect( $invoice->checkoutUrl() );
+			}
+			
+			\IPS\Output::i()->title = \IPS\Member::loggedIn()->language()->addToStack('choose_shipping_method');
+			\IPS\Output::i()->breadcrumb = array_merge(
+				\IPS\Output::i()->breadcrumb,
 				array(
-					\IPS\Http\Url::internal('app=printfulintegration&module=store&controller=cart', 'front', 'merch_cart'),
-					\IPS\Member::loggedIn()->language()->addToStack('printful_cart')
-				),
-				array(
-					\IPS\Http\Url::internal('app=printfulintegration&module=store&controller=cart&do=checkout', 'front', 'merch_cart'),
-					\IPS\Member::loggedIn()->language()->addToStack('choose_shipping_address')
-				),
-				array(
-					\IPS\Http\Url::internal('app=printfulintegration&module=store&controller=cart&do=shipping', 'front', 'merch_cart'),
-					\IPS\Member::loggedIn()->language()->addToStack('choose_shipping_method')
+					'module' =>  array(
+						\IPS\Http\Url::internal('app=printfulintegration&module=store&controller=store', 'front', 'merch_store'),
+						\IPS\Member::loggedIn()->language()->addToStack('frontnavigation_printfulintegration')
+					),
+					array(
+						\IPS\Http\Url::internal('app=printfulintegration&module=store&controller=cart', 'front', 'merch_cart'),
+						\IPS\Member::loggedIn()->language()->addToStack('printful_cart')
+					),
+					array(
+						\IPS\Http\Url::internal('app=printfulintegration&module=store&controller=cart&do=checkout', 'front', 'merch_cart'),
+						\IPS\Member::loggedIn()->language()->addToStack('choose_shipping_address')
+					),
+					array(
+						\IPS\Http\Url::internal('app=printfulintegration&module=store&controller=cart&do=shipping', 'front', 'merch_cart'),
+						\IPS\Member::loggedIn()->language()->addToStack('choose_shipping_method')
+					)
 				)
-			)
-		);
-		\IPS\Output::i()->output .= $form->customTemplate( array( \IPS\Theme::i()->getTemplate( 'forms', 'core' ), 'popupTemplate' ) );
+			);
+			\IPS\Output::i()->output .= $form->customTemplate( array( \IPS\Theme::i()->getTemplate( 'forms', 'core' ), 'popupTemplate' ) );
+			
+	} catch( \Exception $e ) {
+		\IPS\Log::debug( $e );
+	}
 	}
 
 }

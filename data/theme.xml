@@ -112,7 +112,7 @@
             </div>
         {{endif}}
     </div>
-    <div>
+    <div class="ipsSpacer_top">
         {$pagination|raw}
     </div>
 </div>]]></template>
@@ -523,6 +523,72 @@
         </div>
     {{endif}}
 </div>]]></template>
+ <template template_group="widgets" template_name="printfulFeaturedItems" template_data="$title, $items, $orientation='horizontal'" template_location="front" template_app="printfulintegration"><![CDATA[    <div class="ipsWidget_title ipsType_reset">
+        {lang="$title"}
+    </div>
+    <div class="ipsWidget_inner {{if $orientation === 'horizontal'}}ipsPad{{else}}ipsDataList{{endif}}">
+        {{if $orientation === 'horizontal'}}
+            <div class="ipsCarousel ipsClearfix" data-ipscarousel>
+                <div class="ipsCarousel_inner">
+                    <ul class="ipsList_inline" data-role="carouselItems">
+                        {{foreach $items as $item}}
+                            <li class="ipsCarousel_item ipsClearfix" data-ipslazyload style="max-width: 175px;">
+                                <a href="{$item->url()}" alt="{$item->_title}">
+                                    <img src="{file='$item->image' extension='printfulintegration_ProductImage'}" alt="" class="ipsThumb ipsThumb_large">
+                                </a>
+                                <div class="ipsSpacer_top ipsSpacer_half">
+                                    <a href="{$item->url()}" alt="{$item->_title}" class="ipsType_normal ipsType_bold ipsTruncate ipsTruncate_line">
+                                        {$item->_title|raw}
+                                    </a>
+                                    <div class="ipsType_light ipsType_blendLinks">
+                                        <a href='{$item->parent()->url()}' alt="{$item->parent()->_title}" class="ipsTruncate ipsTruncate_line">{$item->parent()->_title}</a>
+                                    </div>
+                                    <div class="ipsSpacer ipsSpacer_half ipsSpacer_top">
+                                        <span class="ipsType_bold ipsType_negative" style="margin-top: 10px;">
+                                            {$item->priceToDisplay(NULL, [], false)}
+                                        </span>
+                                        <div class="ipsBadge ipsBadge_positive ipsBadge_icon ipsBadge_medium ipsPos_right" style="cursor: pointer;" data-ipsTooltip _title="{lang='add_to_cart'}" data-ipsDialog data-ipsDialog-url="{$item->url()}">
+                                            <i class="fa fa-shopping-cart"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        {{endforeach}}
+                    </ul>
+                </div>
+                <span class='ipsCarousel_shadow ipsCarousel_shadowLeft'></span>
+                <span class='ipsCarousel_shadow ipsCarousel_shadowRight'></span>
+                <a href='#' class='ipsCarousel_nav ipsHide' data-action='prev'><i class='fa fa-chevron-left'></i></a>
+                <a href='#' class='ipsCarousel_nav ipsHide' data-action='next'><i class='fa fa-chevron-right'></i></a>
+            </div>
+        {{else}}
+            {{foreach $items as $item}}
+                <div class="ipsDataItem">
+                    <div class="ipsDataItem_icon">
+                        <a href="{$item->url()}" alt="{$item->_title}">
+                            <img src="{file='$item->image' extension='printfulintegration_ProductImage'}" alt="" class="ipsThumb ipsThumb_small">
+                        </a>
+                    </div>
+                    <div class="ipsDataItem_main">
+                        <a href="{$item->url()}" alt="{$item->_title}" class="ipsType_normal ipsType_bold">
+                            {$item->_title|raw}
+                        </a>
+                        <div class="ipsType_light ipsType_blendLinks">
+                            <a href='{$item->parent()->url()}' alt="{$item->parent()->_title}">{$item->parent()->_title}</a>
+                        </div>
+                        <div class="ipsSpacer ipsSpacer_half ipsSpacer_top">
+                            <span class="ipsType_bold ipsType_negative" style="margin-top: 10px;">
+                                {$item->priceToDisplay(NULL, [], false)}
+                            </span>
+                            <div class="ipsBadge ipsBadge_positive ipsBadge_icon ipsBadge_medium ipsPos_right" style="cursor: pointer;" data-ipsTooltip _title="{lang='add_to_cart'}" data-ipsDialog data-ipsDialog-url="{$item->url()->setQueryString('noAjax', 1)}" data-ipsDialog-remoteSubmit="true" data-ipsDialog-forceReload="true">
+                                <i class="fa fa-shopping-cart"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{endforeach}}
+        {{endif}}
+    </div>]]></template>
  <css css_location="admin" css_app="printfulintegration" css_attributes="" css_path="." css_name="dashboard.css">.pDataValue {
   font-size: 24px;
   font-weight: 300;
